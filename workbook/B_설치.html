@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모듈 B. 설치 — 옵시디언 LLM Wiki Workbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
+<nav class="modnav"><a class="chip" href="A_사전준비물.html">A</a>
+<a class="chip cur" href="B_설치.html">B</a>
+<a class="chip" href="C_Vault생성.html">C</a>
+<a class="chip" href="D_온보딩.html">D</a>
+<a class="chip" href="E_Ingest.html">E</a>
+<a class="chip" href="F_Query.html">F</a>
+<a class="chip" href="G_개념정리.html">G</a>
+<a class="chip" href="H_산출물문서.html">H</a>
+<span class="divider">|</span>
+<a class="chip adv" href="I_GraphRAG.html">I</a>
+<a class="chip adv" href="J_세밀화.html">J</a>
+<a class="chip adv" href="K_Vault공유.html">K</a>
+<a class="chip adv" href="L_Index용어집.html">L</a>
+<a class="chip adv" href="M_그래프Join.html">M</a>
+<a class="chip adv" href="N_인사이트View.html">N</a>
+<a class="chip adv" href="O_프레임워크종합.html">O</a>
+<a class="chip adv" href="P_agentauto.html">P</a></nav>
+<header><span class="badge">입문 과정</span><h1>모듈 B. 설치</h1><p class="subtitle">Node.js → 코덱스 CLI → 옵시디언 → Claudian 플러그인 순서로 설치한다 · ⏱ 90~120분</p></header>
+<div class="goalbox">🎯 <b>이 모듈이 끝나면</b> — 터미널에서 <b>코덱스가 실행</b>되고, <b>옵시디언과 Claudian 플러그인</b>이 설치되어 vault 안에서 <b>Claude·Codex 채팅</b>을 열 수 있는 상태가 됩니다.</div>
+<h2>💡 핵심 개념</h2>
+<div class="analogy">Node.js는 <b>도로</b>, NPM은 그 도로를 달리는 <b>택배 트럭</b>입니다. 도로(Node.js)를 먼저 깔아야 트럭(NPM)이 코덱스 같은 도구를 배달할 수 있습니다.</div>
+<div class="concept"><p>CLI(Command Line Interface) = 마우스 대신 <b>글자로 컴퓨터에 명령하는 창</b>입니다. 검은 화면이 떠도 놀라지 않아도 됩니다.</p><p>NPM 명령 한 줄이면 도구가 설치됩니다. 이 과정에서 NPM으로 설치하는 것: 코덱스 CLI. 공식 인스톨러로 설치하는 것: Node.js, 옵시디언.</p><p>설치 순서가 중요합니다: <b>Node.js → 코덱스 CLI → 옵시디언 → Claudian</b>. 코덱스는 Node.js가 있어야 설치되고, 마지막으로 옵시디언 안에서 Claude·Codex를 쓰려면 <b>Claudian 커뮤니티 플러그인</b>을 설치합니다.</p></div>
+<h2>✅ 따라하기</h2>
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>Node.js 공식 다운로드 페이지 <a href="https://nodejs.org/ko/download" target="_blank">nodejs.org/ko/download</a> 접속 → 페이지 <b>아래쪽의 「Windows 설치 프로그램 (.msi)」 버튼</b>을 클릭해 다운로드 후 설치. 설치 중 옵션은 모두 기본값 그대로 '다음'.
+<div style="border:1px solid var(--hairline);padding:16px;margin-top:12px;background:var(--canvas)">
+<p class="note" style="margin:0 0 8px">↓ 다운로드 페이지 화면 구성 (실제 화면은 어두운 배경입니다)</p>
+<div style="font-size:14px;color:var(--ink-muted);letter-spacing:0.16px;margin-bottom:8px">Node.js® <span style="border:1px solid var(--hairline);padding:2px 8px">v24 (LTS) ▾</span> 를 <span style="border:1px solid var(--hairline);padding:2px 8px">Windows ▾</span> 환경에서 … 설치하세요 <span class="note">← 기본값 그대로 두면 됩니다</span></div>
+<div style="background:var(--surface-1);border:1px solid var(--hairline);padding:12px 16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;color:var(--ink-subtle);letter-spacing:0"># Docker는 각 운영 체제별로 설치 지침을…<br>docker pull node:24-alpine …</div>
+<p class="note" style="margin:4px 0 12px">⚠️ 이 검은 코드 박스(Docker·명령어 안내)는 <b>무시하세요</b> — 우리가 쓸 방법이 아닙니다.</p>
+<div><span style="display:inline-block;background:#24a148;color:#fff;padding:10px 16px;font-size:14px;outline:2px solid var(--primary);outline-offset:2px">⬇ Windows 설치 프로그램 (.msi)</span> <b style="color:var(--primary)">← 이 버튼을 클릭</b>&nbsp;&nbsp;<span style="display:inline-block;background:var(--surface-1);color:var(--ink-muted);padding:10px 16px;font-size:14px;border:1px solid var(--hairline)">Standalone Binary (.zip)</span> <span class="note">← 사용 안 함</span></div>
+<p class="note" style="margin:8px 0 0">Mac 사용자는 같은 자리의 「macOS 설치 프로그램 (.pkg)」를 선택합니다.</p>
+</div></span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>터미널 열기 — Windows: 시작 메뉴에서 PowerShell 검색 → <b>마우스 오른쪽 클릭 → 관리자 권한으로 실행</b> / Mac: 터미널 실행.</span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span>Node.js 설치 확인 — 버전 숫자가 나오면 성공.<pre><code>node -v</code></pre>
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 명령 프롬프트</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:13px;line-height:1.6;letter-spacing:0;overflow-x:auto">Microsoft Windows [Version 10.0.26200.8655]<br>(c) Microsoft Corporation. All rights reserved.<br><br>C:\Users\사용자이름&gt;<span style="color:var(--inverse-ink)">node -v</span><br><span style="color:#42be65">v24.14.1</span> &nbsp;<span style="color:var(--ink-subtle)">← 이렇게 버전이 나오면 성공 (숫자는 달라도 됩니다)</span><br><br>C:\Users\사용자이름&gt;_</div>
+</div></span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>코덱스 CLI 설치 (NPM 한 줄).<pre><code>npm install -g @openai/codex</code></pre>
+이어서 클로드 CLI(클로드 코드)도 설치. (선택이지만 함께 설치해두면 클로디안에서 양쪽 모두 연결 가능)<pre><code>npm install -g @anthropic-ai/claude-code</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">5.</span><span>코덱스 실행 후 안내에 따라 ChatGPT 계정으로 로그인. 클로드 CLI를 설치했다면 같은 방법으로 <code>claude</code>를 실행해 Anthropic 계정으로 로그인.<pre><code>codex</code></pre><div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 명령 프롬프트</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:13px;line-height:1.6;letter-spacing:0;overflow-x:auto">Microsoft Windows [Version 10.0.26200.8655]<br>(c) Microsoft Corporation. All rights reserved.<br><br>C:\Users\사용자이름&gt;<span style="color:var(--inverse-ink)">node -v</span><br><span style="color:#42be65">v24.14.1</span><br><br>C:\Users\사용자이름&gt;<span style="color:var(--inverse-ink)">codex</span><br><div style="border:1px solid #525252;padding:8px 12px;margin:8px 0;display:inline-block">&gt;_ <b style="color:var(--inverse-ink)">OpenAI Codex</b> <span style="color:#8c8c8c">(v0.139.0)</span><br>model: &nbsp;<span style="color:var(--inverse-ink)">gpt-5.5 high</span> &nbsp;<span style="color:#78a9ff">/model</span> to change<br>directory: ~</div><br><span style="color:#8c8c8c">› Run /review on my current changes</span><br><span style="color:#f1c21b">gpt-5.5 high</span> · ~ &nbsp;<span style="color:#8c8c8c">← 이 화면(CLI 모드)이 보이면 성공</span></div>
+</div><pre style="margin-top:12px"><code>claude</code></pre><div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 명령 프롬프트</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:13px;line-height:1.6;letter-spacing:0;overflow-x:auto">Microsoft Windows [Version 10.0.26200.8655]<br>(c) Microsoft Corporation. All rights reserved.<br><br>C:\Users\사용자이름&gt;<span style="color:var(--inverse-ink)">claude</span><br><span style="color:#ff8389">▛▜</span> <b style="color:var(--inverse-ink)">Claude Code</b> v2.1.173<br><span style="color:#c6c6c6">&nbsp;&nbsp;&nbsp;Opus 4.8 (1M context) with high effort · Claude Max</span><br><span style="color:#8c8c8c">&nbsp;&nbsp;&nbsp;C:\Users\사용자이름</span><br><br><span style="border-top:1px solid #525252;border-bottom:1px solid #525252;display:inline-block;padding:4px 0;min-width:60%">&gt; _</span><br><span style="color:#8c8c8c">? for shortcuts &nbsp;·&nbsp; ⌐ for agents &nbsp;&nbsp;← 이 화면(CLI 모드)이 보이면 성공</span></div>
+</div><p class="note" style="margin:8px 0 0">명령어 입력 후 Enter → 첫 실행 시 로그인 안내가 나타나고, 로그인하면 위와 같은 CLI 모드 화면으로 들어갑니다. 버전·모델 표기는 달라도 됩니다. 확인했으면 이 창은 닫아도 됩니다 — 실제 작업은 옵시디언 안의 클로디안에서 합니다.</p></span></label><label class="step"><input type="checkbox"><span class="n">6.</span><span>옵시디언 공식 사이트 <a href="https://obsidian.md" target="_blank">obsidian.md</a>에서 다운로드 후 설치. (옵시디언은 NPM 미제공 — 공식 인스톨러가 표준)</span></label>
+<h3>Claudian 플러그인 설치 — 옵시디언에서 Claude·Codex 쓰기</h3>
+<p class="note">Claudian은 Claude Code·Codex 같은 코딩 에이전트를 옵시디언 vault 안의 AI 협업자로 임베드하는 커뮤니티 플러그인입니다. 6단계에서 설치한 옵시디언에 이어서 진행합니다.</p>
+<label class="step"><input type="checkbox"><span class="n">7.</span><span><b>설정에서 커뮤니티 플러그인 메뉴 열기</b> — 옵시디언 왼쪽 아래 <b>톱니바퀴(설정)</b>를 클릭하고, 왼쪽 사이드바에서 <b>옵션 › 커뮤니티 플러그인</b>을 선택합니다. <b>보호 모드</b>가 켜져 있다면 토글을 먼저 끄고, 안내가 뜨면 <b>활성화</b>를 선택하세요. <span class="note">(보호 모드는 제3자 플러그인·스크립트를 차단하는 기능입니다.)</span></span></label>
+<label class="step"><input type="checkbox"><span class="n">8.</span><span><b>탐색(Browse) 버튼 클릭</b> — '커뮤니티 플러그인' 섹션의 <b>탐색</b> 버튼을 누르면 플러그인 검색 모달이 열립니다.</span></label>
+<label class="step"><input type="checkbox"><span class="n">9.</span><span><b>검색창에 <code>claudian</code> 입력</b> — 제작자가 <b>Yishen Tu</b>인 항목이 정확한 플러그인입니다. <span class="note">공식 설명: "Embeds Claude Code, Codex, and other coding agents as AI collaborators in your vault."</span><br><b>주의</b> — 공식 플러그인 ID는 <code>realclaudian</code>, 제작자는 <b>Yishen Tu</b>입니다. 이름이 비슷한 다른 항목을 고르지 않도록 주의하세요.</span></label>
+<label class="step"><input type="checkbox"><span class="n">10.</span><span><b>설치 후 활성화</b> — 플러그인 카드에서 <b>설치(Install)</b> → 잠시 대기 → <b>활성화(Enable)</b>. 설치된 플러그인 목록으로 돌아오면 Claudian이 보이고, 오른쪽 끝의 <b>토글이 파란색</b>이면 활성 상태입니다.<p class="note" style="margin:8px 0 0">화면에서 확인 — 좌측 사이드바 하단의 <i>커뮤니티 플러그인 › Claudian</i> 항목, 우측 카드의 버전·개발자(Yishen Tu)·설명문, 오른쪽의 <b>⚙ 옵션 / + / 🗑 삭제 / 토글</b> 아이콘 4개. 다음 단계는 <b>⚙ 옵션</b> 또는 좌측 사이드바의 <b>Claudian</b> 어느 경로로도 진입할 수 있습니다.</p></span></label>
+<label class="step"><input type="checkbox"><span class="n">11.</span><span><b>Claudian 설정에서 Codex 활성화</b> — <b>⚙(옵션)</b> 아이콘 또는 좌측 사이드바 하단의 <b>커뮤니티 플러그인 › Claudian</b>을 클릭해 설정에 진입합니다. 상단에 4개 탭(<b>General · Claude · Codex · OpenCode</b>)이 보입니다.<br>① 상단 탭에서 <b>Codex</b> 클릭 → ② Setup 섹션의 <b>"Enable Codex provider"</b> 토글 켜기(파란색) → ③ Installation method는 Windows에서 <code>Native Windows</code>가 기본값(WSL 사용자는 WSL로 변경) → ④ <code>Codex CLI path</code>는 비워두면 시스템 PATH에서 자동 감지됩니다.<span class="note"> 토글 옆 설명: "When enabled, Codex models appear in the model selector for new conversations."</span></span></label>
+<label class="step"><input type="checkbox"><span class="n">12.</span><span><b>왼쪽 리본의 새 아이콘 클릭</b> — 설정을 닫으면 화면 왼쪽 끝의 <b>리본(Ribbon)</b>에 Claudian 아이콘이 새로 생깁니다. 마우스를 올리면 <b>"Open Claudian"</b> 툴팁이 표시되고, 클릭하면 오른쪽 사이드바에 채팅 패널이 열립니다. <span class="note">단축키로 열려면 <code>Ctrl/⌘ + P</code>로 명령 팔레트를 열고 "Claudian"으로 검색합니다.</span></span></label>
+<label class="step"><input type="checkbox"><span class="n">13.</span><span><b>채팅창에서 모델과 Effort 선택 (Claude 기본)</b> — 처음 열린 탭은 <b>Claude</b>로 동작합니다. 화면 하단 좌측의 <b>모델명 / Effort</b> 라벨을 클릭해 바꿉니다. 모델 <code>Opus / Sonnet / Haiku</code>, Effort <code>Max / High / Med / Low</code>.<p class="note" style="margin:8px 0 0">하단 바 구성(좌→우): 모델명 · Effort 레벨 · 도구 아이콘 · 컨텍스트 사용량(%) · 폴더(@-멘션) · <b>YOLO 토글</b>. YOLO 토글은 승인 프롬프트 없이 도구 실행을 허용하므로 신뢰하는 작업에서만 사용하세요.</p></span></label>
+<label class="step"><input type="checkbox"><span class="n">14.</span><span><b>+ 버튼으로 Codex 채팅 시작</b> — 채팅창 상단 탭 줄 우측 끝의 <b>+ 버튼</b>으로 새 탭을 만듭니다. 새 탭에서 모델 선택기를 열면 11단계에서 활성화한 <b>Codex 모델(GPT-5.5, GPT-5.4 Mini 등)</b>이 함께 나타납니다. Codex 모델을 선택하면 그 탭은 Codex 대화로 동작합니다.
+<div style="overflow-x:auto;margin-top:12px"><table style="margin:0"><tr><th>구분</th><th>Claude (Tab 1)</th><th>Codex (Tab 2+)</th></tr>
+<tr><td>모델</td><td><code>Opus / Sonnet / Haiku</code></td><td><code>GPT-5.5 / GPT-5.4 Mini</code></td></tr>
+<tr><td>Effort</td><td><code>Max / High / Med / Low</code></td><td><code>XHigh / High / Medium / Low</code></td></tr>
+<tr><td>탭 톤</td><td>주황 (orange)</td><td>파랑 (blue)</td></tr></table></div>
+<p class="note" style="margin:8px 0 0">커스텀 모델 추가 — 11단계 Codex 설정의 <i>Custom models</i> 영역에 <code>gpt-5.4</code>, <code>gpt-5.3-codex-spark</code> 등 모델 ID를 한 줄씩 입력하면 선택기에 함께 나타납니다.</p></span></label>
+<div class="analogy"><b>설치 완료</b> — 이제 왼쪽 리본의 Claudian 아이콘으로 채팅을 열어 <b>Claude와 Codex를 탭별로 분리</b>해 사용할 수 있습니다. 채팅 안에서 <code>@</code>로 vault 파일 멘션, <code>/</code>로 슬래시 커맨드, <code>$</code>로 Skills, <code>#</code>로 instruction 모드를 사용합니다.</div>
+<p class="note">출처 — Claudian: <a href="https://community.obsidian.md/plugins/realclaudian" target="_blank">community.obsidian.md/plugins/realclaudian</a> · GitHub: <a href="https://github.com/YishenTu/claudian" target="_blank">github.com/YishenTu/claudian</a></p>
+<h2>⚠️ 여기서 막혀요</h2>
+<table><tr><th style="width:42%">증상</th><th>해결</th></tr><tr><td>😵 다운로드 페이지에 검은 코드 화면(Docker 등)만 보임</td><td>그 박스는 다른 설치 방식 안내입니다. 무시하고 페이지를 아래로 내려 「Windows 설치 프로그램 (.msi)」 버튼을 클릭하세요.</td></tr><tr><td>😵 'node를 찾을 수 없습니다' 오류</td><td>터미널을 완전히 닫고 새로 연 다음 다시 <code>node -v</code>. 설치 직후에는 기존 터미널이 새 프로그램을 모릅니다.</td></tr><tr><td>😵 npm install에서 권한 오류</td><td>PowerShell을 관리자 권한으로 다시 실행했는지 확인하세요. (Windows에서 가장 흔한 원인)</td></tr><tr><td>😵 코덱스 로그인 실패</td><td>모듈 A에서 메모해둔 ID/PW 사용. 브라우저에 다른 계정이 로그인돼 있으면 로그아웃 후 진행.</td></tr><tr><td>😵 claudian 검색 결과 중 뭘 설치할지 모름</td><td>제작자가 <b>Yishen Tu</b>, 플러그인 ID가 <code>realclaudian</code>인 항목을 고르세요. 이름이 비슷한 다른 플러그인에 주의합니다.</td></tr><tr><td>😵 채팅창 모델 선택기에 Codex 모델이 안 보임</td><td>Claudian 설정 → <b>Codex</b> 탭에서 <b>"Enable Codex provider"</b> 토글이 켜져 있는지 확인하세요(11단계).</td></tr></table>
+<h2>🧠 스스로 확인 <span class="note">(질문을 클릭하면 답이 열립니다)</span></h2>
+<details><summary>Q1. 다음 중 NPM으로 설치하지 않는 것은? (Node.js / 코덱스 CLI / 옵시디언)</summary><div class="ans">Node.js와 옵시디언. Node.js는 NPM의 토대라서, 옵시디언은 NPM을 제공하지 않아서 각각 공식 인스톨러로 설치합니다.</div></details><details><summary>Q2. Node.js를 코덱스보다 먼저 설치하는 이유는?</summary><div class="ans">코덱스 CLI는 npm 명령으로 설치되는데, npm은 Node.js에 포함되어 있기 때문입니다. 도로가 있어야 택배가 옵니다.</div></details>
+<h2>📦 이 모듈의 산출물</h2>
+<div class="outbox"><label><input type="checkbox"><span><code>node -v</code>에 버전 표시</span></label><label><input type="checkbox"><span><code>codex</code> 실행·로그인 성공</span></label><label><input type="checkbox"><span>옵시디언 첫 화면 확인</span></label><label><input type="checkbox"><span>Claudian 설치·활성화 (토글 파란색)</span></label><label><input type="checkbox"><span>리본 아이콘으로 Claudian 채팅 열기 (Claude·Codex 탭)</span></label></div>
+<nav class="bottomnav"><a href="A_사전준비물.html">← A. 사전 준비물</a><a href="C_Vault생성.html">C. Vault 생성 →</a></nav>
+<p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+  var k=location.pathname.split('/').pop()+'_cb'+i;
+  try{ if(localStorage.getItem(k)==='1') cb.checked=true;
+  cb.addEventListener('change',function(){ localStorage.setItem(k, cb.checked?'1':'0'); }); }catch(e){}
+});
+</script>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>

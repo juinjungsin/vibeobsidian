@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>바이브 옵시디언 — 소개</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+/* intro 전용 — 분포 막대 · 장단점 2단 */
+.distbar{display:flex;height:34px;border:1px solid var(--hairline);overflow:hidden;margin:16px 0 8px;
+ font-size:12px;letter-spacing:0.32px}
+.distbar span{display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;min-width:0}
+.proscons{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.proscons>div{flex:1;min-width:min(300px,100%)}
+.pc-item{margin:12px 0}
+.pc-item b{display:block;color:var(--ink)}
+.pc-item span{font-size:14px;color:var(--ink-muted);line-height:1.5}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="index.html">📘 Workbook</a><a class="home" href="용어집.html">📖 용어집</a><a class="home" href="스타터킷.html">📦 스타터킷</a></nav>
+<header><span class="badge">INTRO</span><h1>바이브 옵시디언</h1>
+<p class="subtitle">나만의 PKM, 허들을 넘다</p></header>
+<div class="goalbox">생성형 AI가 옵시디언 커뮤니티 플러그인에 연결되면서, 노동 집약적이던 PKM 구축이 <b>"일단 해보는"</b> 영역으로 바뀌었다. 복잡한 개념과 명령어는 잠시 미뤄두자. <b>내가 가진 자료로 그래프 뷰부터 만들어본다.</b></div>
+
+<span class="badge" style="margin-top:32px">OVERVIEW</span>
+<h2>왜 지금, 바이브 옵시디언인가</h2>
+<figure style="margin:16px 0">
+<picture>
+<source media="(max-width:672px)" srcset="intro_m.png">
+<img src="intro.png" alt="생성형 AI + 옵시디언 플러그인 — 나의 다양한 자료(MD·PDF·웹 클리핑·메모)를 AI와 커뮤니티 플러그인으로 연결해 그래프뷰로 만든다. ① 자료 수집 → ② AI 연결 → ③ 노트 정리 → ④ 그래프뷰" style="width:100%;height:auto;display:block;border:1px solid var(--hairline)">
+</picture>
+</figure>
+<p>PKM(개인지식관리체계)은 전문가들의 전유물이었다. 다양한 도구들이 존재했고, 사용자 분포는 대체로 다음과 같다.</p>
+
+<h3>PKM 사용자 분포</h3>
+<div class="concept">
+<div class="distbar">
+ <span style="flex:0 0 70%;background:var(--surface-2);color:var(--ink-muted)">70%</span>
+ <span style="flex:0 0 20%;background:var(--ink-subtle);color:var(--inverse-ink)">20%</span>
+ <span style="flex:0 0 5%;background:var(--blue-80);color:var(--inverse-ink)">5%</span>
+ <span style="flex:0 0 5%;background:var(--primary);color:var(--inverse-ink)">5%</span>
+</div>
+<p class="note" style="margin:0">허들을 넘지 못한 <b>70%</b> · 넘었지만 유지 못 한 <b>20%</b> · 유지하지만 갈 길 잃은 <b>5%</b> · <b style="color:var(--primary)">프론티어 5%</b></p>
+</div>
+
+<h3>강의의 목표 지점</h3>
+<div class="analogy"><b>프론티어 5%</b>는 동경의 대상. 이 강의가 다루는 구간은 <b>"허들 넘기"</b>와 <b>"유지하기"</b>입니다.</div>
+
+<h2>Pain Point</h2>
+<p>흩어진 자료와 반복 설명의 비용을, <b>지식 관리 구조</b>와 <b>재사용 가능한 AI 맥락</b>으로 해결한다.</p>
+<table>
+<tr><th style="width:20%">문제</th><th style="width:40%">현상</th><th>교육에서 해결하는 방식</th></tr>
+<tr><td>자료가 흩어짐</td><td>PPT, PDF, HWP, 웹자료, 메모가 각자 따로 존재</td><td>Obsidian Vault와 <code>raw/wiki/output</code> 구조로 통합</td></tr>
+<tr><td>다시 찾기 어려움</td><td>예전에 쓴 강의자료를 매번 다시 검색</td><td>Wiki-link, Backlink, Search, Graph View로 재탐색</td></tr>
+<tr><td>AI에 매번 설명해야 함</td><td>강의 맥락, 고객사 맥락을 매번 프롬프트에 반복</td><td>LLM Wiki를 통해 재사용 가능한 맥락 구축</td></tr>
+<tr><td>자료 변환 품질이 낮음</td><td>PDF/PPT를 요약하면 표·그림·출처가 사라짐</td><td>원본 보존, <code>sources</code> 속성, 검수 체크리스트 적용</td></tr>
+<tr><td>시각화가 부족함</td><td>노트가 쌓여도 구조가 보이지 않음</td><td>Graph View와 Canvas로 지식 구조 시각화</td></tr>
+</table>
+
+<h2>바이브 옵시디언 장단점</h2>
+<div class="proscons">
+<div class="concept" style="border-left:3px solid var(--success)">
+<h3 style="margin-top:0">＋ 장점 <span class="note">기술적 타당성 높음</span></h3>
+<div class="pc-item"><b>· 자동 링킹/백링크·인덱스 생성</b><span>Ingest 시점에 지식 간 관계를 찾아 연결하므로, 사용자가 수동으로 링크를 만들지 않아도 지식 그래프 밀도가 올라간다.</span></div>
+<div class="pc-item"><b>· 3개 이상 토픽 교차 시 개념 페이지 생성</b><span>반복 등장하는 개념을 <code>wiki/concepts/</code>로 분리하면 LLM Wiki의 합성 결과가 재사용 가능한 지식 단위가 된다.</span></div>
+<div class="pc-item"><b>· 그래프 뷰 임계점(200+ 노트) 초기 충족</b><span>전통적 PKM은 노트가 쌓이기 전까지 효용을 체감하기 어렵다. 대량 raw를 빠르게 wiki로 전환하면 초기에 지식 지도를 볼 수 있다.</span></div>
+<div class="pc-item"><b>· 세션 간 컨텍스트 보존</b><span>매번 100+ 파일을 다시 읽히지 않고 정제된 위키를 맥락 저장소로 쓰므로 토큰 비용과 반복 설명이 줄어든다.</span></div>
+<div class="pc-item"><b>· 지식의 복리 효과</b><span>새 질문과 답변이 다시 위키에 누적되면서 다음 탐색의 출발점이 좋아진다.</span></div>
+</div>
+<div class="concept" style="border-left:3px solid var(--warning)">
+<h3 style="margin-top:0">－ 한계와 보완 <span class="note">운영 규칙 필요</span></h3>
+<div class="pc-item"><b>· 위키 페이지 직접 편집 비권장</b><span>재컴파일 시 LLM이 wiki 페이지를 다시 생성하면 사용자의 수동 편집과 충돌할 수 있다. 개인 메모는 별도 폴더에 두고 wiki-link로 연결하는 규칙이 필요하다.</span></div>
+<div class="pc-item"><b>· 인간의 거버넌스 레이어 필요</b><span>Lint 규칙, 검수 체크리스트, <code>sources</code> 속성으로 자동 생성 결과를 관리해야 한다.</span></div>
+<div class="pc-item"><b>· 기술적 의존성</b><span>Node 18+, Git, 포트 <code>27124</code>, MCP 서버 등은 입문자에게 진입 장벽이 될 수 있다. 설치 모듈, 원클릭 스크립트, 트러블슈팅 가이드가 전제되어야 한다.</span></div>
+<div class="pc-item"><b>· 외부 API 의존</b><span>Claude/Codex API를 거치면 로컬 중심 데이터 소유권과 보안 민감도가 약해질 수 있다. 민감 자료는 로컬 처리와 제외 기준을 먼저 정해야 한다.</span></div>
+<div class="pc-item"><b>· 기존 자산 통합 방식</b><span>Dataview, Templater, Zettelkasten 자산은 폴더·속성·링크 규칙을 정한 뒤 단계적으로 연결해야 한다.</span></div>
+</div>
+</div>
+
+<h2>다음 단계</h2>
+<div class="cards">
+<a class="card" href="index.html"><b>📘 Workbook 시작하기</b><div class="t">A부터 O까지 모듈별 실습 — 설치부터 산출물(PCD·MRD)까지 따라하며 익힌다.</div></a>
+<a class="card" href="스타터킷.html"><b>📦 스타터킷</b><div class="t">폴더 구조·규칙·명령어(/ingest, /query) 시작 패키지 + 다운로드.</div></a>
+</div>
+<p class="note">바이브 옵시디언 · 옵시디언 + 생성형 AI로 만드는 나만의 LLM Wiki</p>
+</body></html>

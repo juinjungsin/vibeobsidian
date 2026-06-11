@@ -1,0 +1,23 @@
+# ── 로컬 도구·설정 ──
+.claude/
+.playwright-mcp/
+**/.playwright-mcp/
+
+# ── 검수용 임시 스크린샷 (작업 중 생성) ──
+verify_*.png
+
+# ── 루트의 중복 이미지 (정본은 workbook/ 안에 있음) ──
+/intro.png
+/intro_m.png
+/icon_vibeobsidian.png
+
+# ── 빈/임시 작업 파일 ──
+workbook/수정요청_1.txt
+*.tmp
+
+# ── OS·에디터 부산물 ──
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

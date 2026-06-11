@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모듈 D. 온보딩 — 스타터킷·스킬·변환 — 옵시디언 LLM Wiki Workbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
+<nav class="modnav"><a class="chip" href="A_사전준비물.html">A</a>
+<a class="chip" href="B_설치.html">B</a>
+<a class="chip" href="C_Vault생성.html">C</a>
+<a class="chip cur" href="D_온보딩.html">D</a>
+<a class="chip" href="E_Ingest.html">E</a>
+<a class="chip" href="F_Query.html">F</a>
+<a class="chip" href="G_개념정리.html">G</a>
+<a class="chip" href="H_산출물문서.html">H</a>
+<span class="divider">|</span>
+<a class="chip adv" href="I_GraphRAG.html">I</a>
+<a class="chip adv" href="J_세밀화.html">J</a>
+<a class="chip adv" href="K_Vault공유.html">K</a>
+<a class="chip adv" href="L_Index용어집.html">L</a>
+<a class="chip adv" href="M_그래프Join.html">M</a>
+<a class="chip adv" href="N_인사이트View.html">N</a>
+<a class="chip adv" href="O_프레임워크종합.html">O</a>
+<a class="chip adv" href="P_agentauto.html">P</a></nav>
+<header><span class="badge">입문 과정</span><h1>모듈 D. 온보딩 — 스타터킷·스킬·변환</h1><p class="subtitle">표준 폴더 구조를 자동 생성하고 변환 파이프라인을 갖춘다 · ⏱ 70~90분</p></header>
+<div class="goalbox">🎯 <b>이 모듈이 끝나면</b> — <b>표준 폴더 구조가 자동 생성</b>되고, 내 파일을 <b>MD로 변환</b>할 수 있게 됩니다.</div>
+<h2>💡 핵심 개념</h2>
+<div class="analogy">에베레스트를 오를 때 <b>베이스캠프까지는 헬기로 갑니다</b>. 스타터킷이 그 헬기입니다. 폴더 구조와 규칙을 직접 설계하는 것은 고급자의 일이고, 우리는 검증된 구조를 받아서 바로 등반(실습)을 시작합니다.</div>
+<div class="concept"><p>스타터킷 = <b>폴더 트리 + 폴더 간 규칙 + 자료 처리 방식</b>을 미리 규정해둔 패키지. 받은 구조는 건드리지 않습니다.</p><p>폴더 이름 앞 숫자(10_, 20_…)는 순서 표시이자 길찾기용입니다. "50번 폴더 들어가세요"라고 안내받기 위함입니다.</p><p>스킬 = 클로디안에서 <b>슬래시(/)로 부르는 자동화 명령</b>. 긴 프롬프트를 복사해 붙이는 대신 <code>/ingest</code>처럼 한 단어로 실행합니다.</p></div>
+<h2>✅ 따라하기</h2>
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>클로디안 설치 — 옵시디언 설정(톱니바퀴) → 커뮤니티 플러그인 → 제한 모드 해제 → 탐색 → <b>Claudesidian</b> 검색 → 설치 → 활성화. <b>반드시 Vault를 연 다음에만 가능합니다.</b></span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>좌측 사이드바의 클로디안 아이콘 클릭 → 설정에서 <b>Enable Codex Provider</b> 활성화 → 모델 선택.</span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span>스타터킷 압축 해제 → 생긴 StarterKit 폴더 <b>안의 내용물 전체</b>를 잘라내어 <b>Vault 루트(.obsidian 폴더와 같은 층)</b>에 붙여넣기. <b>같은 이름 폴더가 없어 충돌·덮어쓰기 고민이 없습니다</b> (명령어는 온보딩 때 AI가 자동 설치). StarterKit 폴더째 넣지만 마세요. <a href="스타터킷.html">📦 스타터킷 상세 페이지</a> 참고.<pre><code>내Vault폴더/
+├─ .obsidian/  .claudian/  .claude/   ← 자동 생성 (신경 쓸 필요 없음)
+├─ CLAUDE.md  AGENTS.md  README.md
+├─ 00_Setup/commands/                 ← 명령어 원본 (AI가 자동 설치)
+└─ 10_Inbox/ 20_Raw/ 30_Wiki/ 40_Query/ 50_Output/</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>클로디안 입력창에 적용 명령 → 빈 화면에서 <b>폴더 구조가 자동 생성</b>되는 것 확인.<pre><code>스타터킷의 규칙을 이 Vault에 적용해줘</code></pre>
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 옵시디언 — 적용 명령 실행 중 화면</div>
+<div style="display:flex;flex-wrap:wrap;background:var(--inverse-canvas)">
+<div style="flex:1;min-width:min(200px,100%);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;color:var(--inverse-ink-muted);border-right:1px solid #393939">
+<span style="color:#8c8c8c">파일 탐색기</span><br>
+▾ StarterKit<br>
+&nbsp;&nbsp;▾ 00_Setup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;▸ commands<br>
+&nbsp;&nbsp;▾ 10_Inbox<br>
+&nbsp;&nbsp;▾ 20_Raw<br>
+&nbsp;&nbsp;▾ 30_Wiki<br>
+&nbsp;&nbsp;&nbsp;&nbsp;▸ Concept&nbsp; ▸ Entity<br>
+&nbsp;&nbsp;&nbsp;&nbsp;▸ Guide&nbsp; ▸ MOC<br>
+&nbsp;&nbsp;▾ 40_Query<br>
+&nbsp;&nbsp;▾ 50_Output<br>
+&nbsp;&nbsp;AGENTS&nbsp; CLAUDE&nbsp; README</div>
+<div style="flex:1.4;min-width:min(260px,100%);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;color:var(--inverse-ink-muted)">
+<b style="color:var(--inverse-ink)">✳ Claudian</b><br>
+현재 Vault 구조를 파악해야겠습니다. 탐색해 보겠습니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> date <span style="color:#42be65">✓</span><br>
+<span style="color:#78a9ff">&gt;_ Bash</span> ls -la <span style="color:#42be65">✓</span><br>
+StarterKit 폴더가 있네요. 내용을 살펴보겠습니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> ls -la StarterKit/ <span style="color:#42be65">✓</span><br>
+핵심 규칙 파일들을 읽어보겠습니다.<br>
+<span style="color:#78a9ff">📄 Read</span> README.md <span style="color:#42be65">✓</span><br>
+<span style="color:#78a9ff">📄 Read</span> CLAUDE.md <span style="color:#42be65">✓</span><br>
+<span style="color:#78a9ff">📄 Read</span> AGENTS.md <span style="color:#42be65">✓</span><br>
+<span style="color:#f1c21b;font-style:italic">작업 진행 중… (esc to interrupt)</span></div>
+</div></div>
+<p class="note" style="margin:8px 0 0">적용 명령을 입력하면 위처럼 AI가 폴더를 탐색하고 규칙 파일을 읽는 과정이 차례로 표시됩니다. 체크(✓)가 이어지는 동안 기다리면 되고, 끝나면 "온보딩 완료" 보고가 나옵니다.</p></span></label><label class="step"><input type="checkbox"><span class="n">5.</span><span>스킬 설치 — 클로디안에 아래를 입력. (옵시디언 공식 스킬 모음 — <a href="https://github.com/kepano/obsidian-skills" target="_blank">github.com/kepano/obsidian-skills</a>)<pre><code>이 링크를 스킬로 설치해줘: https://github.com/kepano/obsidian-skills.git</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">6.</span><span>파일 변환 스킬 탑재 — 아래 프롬프트를 통째로 복사해 클로디안에 붙여넣기. 완료되면 <code>/convert</code>(변환)와 <code>/convert-eval</code>(OCR 품질 평가·개선) 명령이 생기고, /ingest가 MD가 아닌 파일을 만나면 자동으로 변환을 거칩니다.<pre><code>파일 변환 스킬(file-converter)을 만들어 이 Vault에 탑재해줘.
+
+요구사항:
+1. 대상 파일: PDF, 이미지(PNG·JPG), PPT/PPTX, Excel(XLSX·CSV), HTML, DOCX 등
+   옵시디언에서 MD로 변환 가능한 모든 확장자
+2. 스캔 PDF·이미지·PPT 속 그림은 OCR로 텍스트를 추출해 MD로 변환 (한글 인식 우선)
+3. /ingest 공정과 연결: /ingest 실행 중 10_Inbox에서 MD가 아닌 파일을 만나면
+   이 스킬을 자동 호출해 MD 변환 → 메타데이터 장착 → Raw 보관 → Wiki 분해까지
+   한 흐름으로 이어지게 할 것
+4. OCR 품질 개선용 /convert-eval 옵션 포함:
+   - 변환 결과의 인식 오류(깨진 글자, 누락된 표)를 보고하고
+   - 원본 대비 정확도 평가와 개선 제안을 노트로 남길 것
+5. 스킬 이름은 /convert 로 호출. CLAUDE.md(AGENTS.md) 규칙과 충돌하지 않게 저장할 것
+6. 변환 도구 자동 탐지: pandoc·soffice(LibreOffice)·tesseract·python이 PATH에 있으면
+   우선 활용하고, 없으면 설치를 요구하지 말고 네가 파일을 직접 읽어 MD로 변환하는
+   폴백으로 동작할 것. Windows의 python 스토어 별칭(더미)과 convert(디스크 변환기)는
+   호출하지 말 것. 탐지 결과(사용 가능 도구 목록)를 완료 보고에 포함할 것.
+
+완성되면 사용법을 3줄로 보고해줘.</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">7.</span><span>파일 변환 테스트 — PDF(또는 PPT, 이미지) 1개를 10_Inbox에 넣고 <code>/convert</code>(또는 바로 <code>/ingest</code>)로 MD 변환 확인. 스캔본이면 <code>/convert-eval</code>로 인식 품질도 점검.
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ Claudian — /ingest 실행 예시 (PDF 1건)</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;overflow-x:auto">
+<span style="display:inline-block;border:1px solid #525252;padding:4px 10px;margin-bottom:8px;color:var(--inverse-ink)">/ingest</span><br>
+인제스트를 시작합니다. 먼저 <b style="color:var(--inverse-ink)">10_Inbox를 스캔</b>하겠습니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> echo "=== 1... <span style="color:#42be65">✓</span><br>
+_README_10_Inbox.md는 스타터킷 구조 파일이므로 제외하고, <b style="color:var(--inverse-ink)">PDF 1건</b>("실무 적용형 AI 도구 활용 교육 제안.pdf")을 대상으로 합니다. <b style="color:var(--inverse-ink)">/convert 절차에 따라 먼저 텍스트층 유무를 확인</b>하겠습니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> echo "=== R... <span style="color:#42be65">✓</span><br>
+1쪽 텍스트층이 비어 있습니다(32쪽). <b style="color:#f1c21b">스캔/이미지 기반 PDF일 가능성이 높습니다.</b> 전체 페이지의 텍스트층 유무를 확인해 OCR 범위를 정하겠습니다.<br>
+<span style="color:#f1c21b;font-style:italic">Getting to work… (esc to interrupt · 36s)</span></div></div>
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ /ingest 완료 결과 — PDF 1건 → 위키 노트 14개</div>
+<div style="display:flex;flex-wrap:wrap;background:var(--inverse-canvas)">
+<div style="flex:1;min-width:min(230px,100%);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;color:var(--inverse-ink-muted);border-right:1px solid #393939">
+<span style="color:#8c8c8c">20_Raw 노트 — 프론트매터 자동 장착</span><br>
+<b style="color:var(--inverse-ink)">실무 적용형 AI 도구 활용 교육 제안</b><br>
+title: 실무 적용형 AI 도구 활용 교육 제안<br>
+type: raw · created: 2026-06-11<br>
+origin: external · confirmed: ☐<br>
+tags: AI교육 · 바이브코딩 · AI에이전트 …<br>
+source_type: 보고서 · author: 샘소타<br>
+summary: 실습형 교육 제안서. 현업 페인 포인트 해결 중심으로 8개 실습 모듈…<br>
+key_question: 현업에 즉시 투입 가능한 AI 도구 활용 역량과 MVP 산출물을 어떻게 확보할 것인가?<br>
+status: 미검토</div>
+<div style="flex:1.3;min-width:min(260px,100%);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;color:var(--inverse-ink-muted)">
+<b style="color:var(--inverse-ink)">📋 INGEST 완료 보고</b><br>
+처리 파일: 1건 — …교육 제안.pdf (32쪽, 완전 스캔 PDF)<br>
+변환 방식: 텍스트층 없음 → <b style="color:var(--inverse-ink)">비전 OCR(한글 우선)로 32쪽 전사</b><br>
+Raw 보관: <span style="color:#78a9ff">20_Raw/…교육 제안.md</span> (메타데이터 장착, 영구 보관)<br><br>
+<b style="color:var(--inverse-ink)">생성된 위키 노트 14개</b><br>
+Concept (4) — <span style="color:#78a9ff">바이브코딩 · AI Agent · AX 교육 · AI 도구 활용 4대 설계 원칙</span><br>
+Entity (4) — <span style="color:#78a9ff">샘소타 · 한솔아이원스 · Claude Code · GPT Codex</span><br>
+Guide (5) — <span style="color:#78a9ff">AI 실습 교육 커리큘럼 · 업무 자동화 PRD 작성법 …</span><br>
+MOC (1) — <span style="color:#78a9ff">실무 적용형 AI 도구 활용 교육 (MOC)</span> (전체 지도, 위키링크 연결)<br><br>
+<span style="color:#f1c21b">⚠ 수동 처리 필요</span> — 샌드박스가 삭제 명령을 차단해 10_Inbox 원본 등 2개는 직접 삭제 요청</div>
+</div></div>
+<p class="note" style="margin:8px 0 0">/ingest만 입력해도 위처럼 스킬이 연쇄 동작합니다 — Inbox 스캔 → 구조 파일 제외 → 텍스트층 검사 → 스캔본이면 OCR 범위 결정 → MD 변환 → 메타데이터 → Wiki 분해. 완료되면 <b>PDF 1건이 Raw 보관 1건 + 위키 노트 14개(Concept·Entity·Guide·MOC)</b>로 분해된 보고를 받습니다 — 모듈 E에서 배울 "1 대 다 분리"가 바로 이것입니다. 환경에 따라 원본 삭제가 차단되면 보고의 안내대로 직접 지우면 됩니다.</p></span></label>
+<details><summary>선택 — OCR·변환 품질 높이기 (외부 도구, 설치하지 않아도 기본 변환은 동작합니다)</summary><div class="ans">
+<p>변환 스킬은 외부 도구가 없으면 AI가 직접 파일을 읽는 폴백으로 동작합니다. 스캔 PDF가 많거나 표가 복잡하다면 아래 도구를 쓰면 품질이 올라갑니다.</p>
+<p><b>① 이미 설치했는데 "사용 불가"로 나오는 경우 — PATH 미등록이 원인입니다.</b></p>
+<pre><code>where tesseract
+where soffice
+python --version</code></pre>
+<p>안 나오는 도구는 시스템 환경 변수 PATH에 설치 경로를 추가한 뒤 터미널과 옵시디언을 재시작하세요.
+예: <code>C:\Program Files\Tesseract-OCR</code> · <code>C:\Program Files\LibreOffice\program</code>.
+python이 "더미"로 나오면 Windows 설정 → 앱 실행 별칭에서 python 별칭을 끄세요.</p>
+<p><b>② 도구가 없는 경우 (선택 설치)</b></p>
+<p>LibreOffice(<a href="https://www.libreoffice.org/download/" target="_blank">libreoffice.org</a> — PPT·Excel·DOCX 변환),
+Tesseract OCR(<a href="https://github.com/UB-Mannheim/tesseract/wiki" target="_blank">UB-Mannheim 빌드</a> — 설치 시 Korean 언어 데이터 선택),
+Python(<a href="https://www.python.org/downloads/" target="_blank">python.org</a> — 설치 첫 화면에서 "Add python.exe to PATH" 체크).</p>
+<p>설치 후(또는 도구가 있는데 인식이 안 될 때) 클로디안에 <b>"변환 도구를 다시 탐지해줘"</b>라고 요청하세요. 실제 진행 화면 예시:</p>
+<div style="border:1px solid var(--hairline);margin:8px 0">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ Claudian — 변환 도구 재탐지</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;overflow-x:auto">
+<span style="display:inline-block;border:1px solid #525252;padding:4px 10px;margin-bottom:8px;color:var(--inverse-ink)">변환 도구를 다시 탐지해줘. libreoffice·tesseract·python 라이브러리 보유하고 있어</span><br>
+이전엔 PATH에 안 잡혔는데 설치되셨다니, <b style="color:var(--inverse-ink)">PATH 외 일반 설치 경로까지 포함해</b> 다시 탐지하겠습니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> echo "=== P... <span style="color:#42be65">✓</span><br>
+LibreOffice·Tesseract는 <b style="color:var(--inverse-ink)">Program Files에 설치돼 있으나 PATH에 없습니다</b>. python은 더미지만 pip은 실제 경로를 가리킵니다.<br>
+<span style="color:#78a9ff">&gt;_ Bash</span> SOFFICE="/c... <span style="color:#42be65">✓</span><br>
+핵심: <b style="color:#f1c21b">tesseract에 한글팩(kor)이 없습니다</b> (eng·osd만 존재) — 한글 OCR에 치명적입니다. python은 py -3(3.14)로 동작합니다.<br>
+<b style="color:var(--inverse-ink)">재탐지 결과 — 환경이 크게 좋아졌습니다</b> (도구별 상태 표 출력)<br><br>
+<span style="color:#8c8c8c">Question</span><br>
+Tesseract 한글팩(kor) + pytesseract를 지금 설치할까요? (한글 OCR 보조 엔진용)<br>
+&nbsp;1. <b style="color:var(--inverse-ink)">설치해줘 (권장)</b> — kor.traineddata 내려받아 한글 OCR 가능하게 함<br>
+&nbsp;2. 설치 안 함 — 한글 OCR은 AI 비전으로만 사용, 스킬은 지금도 정상 동작</div></div>
+<p class="note">이렇게 자연어로 요청하면 AI가 PATH 밖 설치 경로까지 찾아내고, 부족한 것(예: 한글팩)은 선택지로 물어봅니다. "설치해줘"를 고르면 설치까지 AI가 수행합니다 — 사용자가 직접 PATH를 만지는 것은 위 ①의 보조 수단입니다.</p>
+</div></details><label class="step"><input type="checkbox"><span class="n">8.</span><span>그래프 뷰 열기(좌측 아이콘) → 변환된 노트가 점으로 나타나는 것 확인. 첫 wow point입니다.<div style="border:1px solid var(--hairline);margin-top:12px"><div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 그래프 뷰 — PDF 1건 인제스트 직후</div><svg viewBox="0 0 640 460" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block"><rect width="640" height="460" fill="#161616"/><line x1="250" y1="265" x2="150" y2="140" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="295" y2="135" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="215" y2="190" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="330" y2="205" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="140" y2="220" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="395" y2="240" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="90" y2="285" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="345" y2="290" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="140" y2="345" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="272" y2="335" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="252" y2="400" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="160" y2="415" stroke="#525252" stroke-width="1"/><line x1="250" y1="265" x2="372" y2="408" stroke="#525252" stroke-width="1"/><line x1="150" y1="140" x2="140" y2="220" stroke="#393939" stroke-width="1"/><line x1="395" y1="240" x2="272" y2="335" stroke="#393939" stroke-width="1"/><line x1="215" y1="190" x2="330" y2="205" stroke="#393939" stroke-width="1"/><line x1="272" y1="335" x2="252" y2="400" stroke="#393939" stroke-width="1"/><line x1="140" y1="345" x2="160" y2="415" stroke="#393939" stroke-width="1"/><line x1="295" y1="135" x2="215" y2="190" stroke="#393939" stroke-width="1"/><line x1="330" y1="205" x2="395" y2="240" stroke="#393939" stroke-width="1"/><line x1="252" y1="400" x2="372" y2="408" stroke="#393939" stroke-width="1"/><circle cx="250" cy="265" r="13" fill="#e0e0e0"/><text x="250" y="295" font-size="11" fill="#c6c6c6" text-anchor="middle">실무 적용형 AI 도구 활용 교육</text><text x="250" y="308" font-size="11" fill="#c6c6c6" text-anchor="middle">(MOC)</text><circle cx="150" cy="140" r="6" fill="#c6c6c6"/><text x="150" y="158" font-size="10" fill="#8c8c8c" text-anchor="middle">샘소타</text><circle cx="295" cy="135" r="6" fill="#c6c6c6"/><text x="295" y="153" font-size="10" fill="#8c8c8c" text-anchor="middle">Claude Code</text><circle cx="215" cy="190" r="6" fill="#c6c6c6"/><text x="215" y="208" font-size="10" fill="#8c8c8c" text-anchor="middle">AI 실습 교육 커리큘럼</text><circle cx="330" cy="205" r="6" fill="#c6c6c6"/><text x="330" y="223" font-size="10" fill="#8c8c8c" text-anchor="middle">업무 자동화 PRD 작성법</text><circle cx="140" cy="220" r="6" fill="#c6c6c6"/><text x="140" y="238" font-size="10" fill="#8c8c8c" text-anchor="middle">GPT Codex</text><circle cx="395" cy="240" r="6" fill="#c6c6c6"/><text x="395" y="258" font-size="10" fill="#8c8c8c" text-anchor="middle">바이브코딩</text><circle cx="90" cy="285" r="6" fill="#c6c6c6"/><text x="90" y="303" font-size="10" fill="#8c8c8c" text-anchor="middle">한솔아이원스</text><circle cx="345" cy="290" r="6" fill="#c6c6c6"/><text x="345" y="308" font-size="10" fill="#8c8c8c" text-anchor="middle">표준 프롬프트와 트러블슈팅 가이드</text><circle cx="140" cy="345" r="6" fill="#c6c6c6"/><text x="140" y="363" font-size="10" fill="#8c8c8c" text-anchor="middle">AX 교육</text><circle cx="272" cy="335" r="6" fill="#c6c6c6"/><text x="272" y="353" font-size="10" fill="#8c8c8c" text-anchor="middle">AI Agent</text><circle cx="252" cy="400" r="6" fill="#c6c6c6"/><text x="252" y="418" font-size="10" fill="#8c8c8c" text-anchor="middle">바이브코딩 공통 프롬프트 패턴</text><circle cx="160" cy="415" r="6" fill="#c6c6c6"/><text x="160" y="433" font-size="10" fill="#8c8c8c" text-anchor="middle">AI 활용 보안·검증 수칙</text><circle cx="372" cy="408" r="6" fill="#c6c6c6"/><text x="372" y="426" font-size="10" fill="#8c8c8c" text-anchor="middle">AI 도구 활용 4대 설계 원칙</text><circle cx="248" cy="42" r="5" fill="#6f6f6f"/><text x="248" y="58" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_10_Inbox</text><circle cx="425" cy="58" r="5" fill="#6f6f6f"/><text x="425" y="74" font-size="10" fill="#6f6f6f" text-anchor="middle">실무 적용형 AI 도구 활용 교육 제안__eval</text><circle cx="310" cy="88" r="5" fill="#6f6f6f"/><text x="310" y="104" font-size="10" fill="#6f6f6f" text-anchor="middle">AGENTS</text><circle cx="455" cy="108" r="5" fill="#6f6f6f"/><text x="455" y="124" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_40_Query</text><circle cx="110" cy="112" r="5" fill="#6f6f6f"/><text x="110" y="128" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_50_Output</text><circle cx="195" cy="98" r="5" fill="#6f6f6f"/><text x="195" y="114" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_Concept</text><circle cx="535" cy="145" r="5" fill="#6f6f6f"/><text x="535" y="161" font-size="10" fill="#6f6f6f" text-anchor="middle">README</text><circle cx="382" cy="128" r="5" fill="#6f6f6f"/><text x="382" y="144" font-size="10" fill="#6f6f6f" text-anchor="middle">query</text><circle cx="565" cy="235" r="5" fill="#6f6f6f"/><text x="565" y="251" font-size="10" fill="#6f6f6f" text-anchor="middle">convert</text><circle cx="62" cy="255" r="5" fill="#6f6f6f"/><text x="62" y="271" font-size="10" fill="#6f6f6f" text-anchor="middle">convert-eval</text><circle cx="62" cy="185" r="5" fill="#6f6f6f"/><text x="62" y="201" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_MOC</text><circle cx="497" cy="305" r="5" fill="#6f6f6f"/><text x="497" y="321" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_30_Wiki</text><circle cx="565" cy="345" r="5" fill="#6f6f6f"/><text x="565" y="361" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_20_Raw</text><circle cx="458" cy="360" r="5" fill="#6f6f6f"/><text x="458" y="376" font-size="10" fill="#6f6f6f" text-anchor="middle">CLAUDE</text><circle cx="522" cy="405" r="5" fill="#6f6f6f"/><text x="522" y="421" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_Guide</text><circle cx="392" cy="338" r="5" fill="#6f6f6f"/><text x="392" y="354" font-size="10" fill="#6f6f6f" text-anchor="middle">ingest</text><circle cx="435" cy="432" r="5" fill="#6f6f6f"/><text x="435" y="448" font-size="10" fill="#6f6f6f" text-anchor="middle">_README_Entity</text></svg></div><p class="note" style="margin:8px 0 0">점 하나 = 노트 하나, 선 = 위키링크. 가운데 큰 점이 <b>MOC(지도 노트)</b>로 허브가 되어 14개 위키 노트를 연결합니다. 주변에 선 없이 떠 있는 어두운 점들은 스타터킷 안내 파일(_README)과 명령어 파일 — 링크가 없어서 떨어져 보이는 것이 정상입니다. 자료를 넣을수록 이 별자리가 자랍니다.</p></span></label>
+<h2>⚠️ 여기서 막혀요</h2>
+<table><tr><th style="width:42%">증상</th><th>해결</th></tr><tr><td>😵 클로디안이 설치 목록에 없음</td><td>Vault를 열기 전에는 플러그인을 설치할 수 없습니다. 모듈 C가 끝난 상태인지 확인하세요.</td></tr><tr><td>😵 클로디안이 30초쯤 멈췄다가 오류</td><td>MCP 서버 응답 문제일 수 있습니다. 코덱스 설정에서 MCP Servers 항목을 모두 비활성화한 뒤 다시 시도하세요.</td></tr><tr><td>😵 폴더가 자동 생성되지 않음</td><td>스타터킷 내용물이 Vault 루트(.obsidian과 같은 층)에 있는지 확인하세요. 한 단계 위에 있거나 StarterKit 하위 폴더째 들어가 있으면 클로디안이 규칙 파일을 찾지 못합니다.</td></tr></table>
+<h2>🧠 스스로 확인 <span class="note">(질문을 클릭하면 답이 열립니다)</span></h2>
+<details><summary>Q1. 클로디안은 언제부터 설치할 수 있나?</summary><div class="ans">Vault를 만들어 연 다음부터. 플러그인은 Vault 단위로 설치됩니다.</div></details><details><summary>Q2. 받은 폴더 구조를 내 마음대로 바꾸면 안 되는 이유는?</summary><div class="ans">규칙(메타데이터·자료 처리 방식)이 폴더 구조를 전제로 동작하기 때문입니다. 구조를 바꾸면 자동화가 깨지고, 직접 설계는 고급 과정의 일입니다.</div></details>
+<h2>📦 이 모듈의 산출물</h2>
+<div class="outbox"><label><input type="checkbox"><span>표준 폴더 구조 자동 생성 확인</span></label><label><input type="checkbox"><span>스킬 1개 이상 설치</span></label><label><input type="checkbox"><span>파일 1개 MD 변환 + 그래프 뷰 확인</span></label></div>
+<nav class="bottomnav"><a href="C_Vault생성.html">← C. Vault 생성</a><a href="E_Ingest.html">E. 자료 등록 — Ingest →</a></nav>
+<p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+  var k=location.pathname.split('/').pop()+'_cb'+i;
+  try{ if(localStorage.getItem(k)==='1') cb.checked=true;
+  cb.addEventListener('change',function(){ localStorage.setItem(k, cb.checked?'1':'0'); }); }catch(e){}
+});
+</script>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>

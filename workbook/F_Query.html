@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모듈 F. 질문과 답변 — Query & Compounding — 옵시디언 LLM Wiki Workbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
+<nav class="modnav"><a class="chip" href="A_사전준비물.html">A</a>
+<a class="chip" href="B_설치.html">B</a>
+<a class="chip" href="C_Vault생성.html">C</a>
+<a class="chip" href="D_온보딩.html">D</a>
+<a class="chip" href="E_Ingest.html">E</a>
+<a class="chip cur" href="F_Query.html">F</a>
+<a class="chip" href="G_개념정리.html">G</a>
+<a class="chip" href="H_산출물문서.html">H</a>
+<span class="divider">|</span>
+<a class="chip adv" href="I_GraphRAG.html">I</a>
+<a class="chip adv" href="J_세밀화.html">J</a>
+<a class="chip adv" href="K_Vault공유.html">K</a>
+<a class="chip adv" href="L_Index용어집.html">L</a>
+<a class="chip adv" href="M_그래프Join.html">M</a>
+<a class="chip adv" href="N_인사이트View.html">N</a>
+<a class="chip adv" href="O_프레임워크종합.html">O</a>
+<a class="chip adv" href="P_agentauto.html">P</a></nav>
+<header><span class="badge">입문 과정</span><h1>모듈 F. 질문과 답변 — Query & Compounding</h1><p class="subtitle">질문하고, 가치 있는 답변을 다시 자산으로 쌓는다 · ⏱ 50분</p></header>
+<div class="goalbox">🎯 <b>이 모듈이 끝나면</b> — Vault에 질문하고 <b>답변을 노트로 승격</b>시켜, 지식이 복리로 쌓이는 순환을 경험합니다.</div>
+<h2>💡 핵심 개념</h2>
+<div class="analogy">일반 AI 채팅의 질문은 <b>소비</b>입니다 — 답을 보고 나면 사라집니다. LLM Wiki의 질문은 <b>투자</b>입니다 — 좋은 답변이 노트가 되어 다음 답변의 재료로 다시 쓰입니다. 질문 100번이면 자산 노트 100개가 생깁니다.</div>
+<div class="concept"><p>Query = 일반 질문이 아니라 <b>"위키 안에서만 근거를 찾아 답해"</b>라고 범위를 가두는 질문입니다. 인터넷이 아니라 내 자료가 근거가 됩니다.</p><p>가치 있는 답변은 ① 별도 노트로 생성하거나 ② 기존 노트에 추가합니다. 이것이 <b>컴파운딩(복리)</b>의 실체입니다.</p><p>AI가 만든 노트를 내가 읽고 <b>컨펌(체크)</b>하면 그 노트의 신뢰 가중치가 올라갑니다. 전문가인 내 판단이 시스템 품질을 결정합니다.</p></div>
+<div style="border:1px solid var(--hairline);padding:24px;margin:12px 0">
+<p style="margin:0 0 4px"><b>시간 경과에 따른 가치 곡선</b></p>
+<p class="note" style="margin:0 0 12px">RAG는 6개월 뒤에도 1일차와 동일 출발선. LLM Wiki는 페이지·교차 참조가 누적될수록 가속.</p>
+<svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block">
+<rect width="560" height="420" fill="#ffffff"/>
+<line x1="60" y1="350.0" x2="510" y2="350.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="354.0" font-size="11" fill="#525252" text-anchor="end">10</text><line x1="60" y1="318.0" x2="510" y2="318.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="322.0" font-size="11" fill="#525252" text-anchor="end">20</text><line x1="60" y1="286.0" x2="510" y2="286.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="290.0" font-size="11" fill="#525252" text-anchor="end">30</text><line x1="60" y1="254.0" x2="510" y2="254.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="258.0" font-size="11" fill="#525252" text-anchor="end">40</text><line x1="60" y1="222.0" x2="510" y2="222.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="226.0" font-size="11" fill="#525252" text-anchor="end">50</text><line x1="60" y1="190.0" x2="510" y2="190.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="194.0" font-size="11" fill="#525252" text-anchor="end">60</text><line x1="60" y1="158.0" x2="510" y2="158.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="162.0" font-size="11" fill="#525252" text-anchor="end">70</text><line x1="60" y1="126.0" x2="510" y2="126.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="130.0" font-size="11" fill="#525252" text-anchor="end">80</text><line x1="60" y1="94.0" x2="510" y2="94.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="98.0" font-size="11" fill="#525252" text-anchor="end">90</text><line x1="60" y1="62.0" x2="510" y2="62.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="66.0" font-size="11" fill="#525252" text-anchor="end">100</text><line x1="60" y1="30.0" x2="510" y2="30.0" stroke="#e0e0e0" stroke-width="1"/><text x="52" y="34.0" font-size="11" fill="#525252" text-anchor="end">110</text>
+<line x1="60" y1="350" x2="510" y2="350" stroke="#525252" stroke-width="1"/>
+<text x="70" y="372" font-size="11" fill="#525252" text-anchor="middle">1M</text><text x="132" y="372" font-size="11" fill="#525252" text-anchor="middle">2M</text><text x="194" y="372" font-size="11" fill="#525252" text-anchor="middle">3M</text><text x="256" y="372" font-size="11" fill="#525252" text-anchor="middle">4M</text><text x="318" y="372" font-size="11" fill="#525252" text-anchor="middle">5M</text><text x="380" y="372" font-size="11" fill="#525252" text-anchor="middle">6M</text><text x="442" y="372" font-size="11" fill="#525252" text-anchor="middle">9M</text><text x="504" y="372" font-size="11" fill="#525252" text-anchor="middle">12M</text>
+<text x="20" y="190" font-size="11" fill="#525252" transform="rotate(-90 20 190)" text-anchor="middle">누적 가치 (상대값)</text>
+<text x="285" y="395" font-size="11" fill="#525252" text-anchor="middle">경과 시간</text>
+<polygon points="60,350 70,350.0 132,337.2 194,318.0 256,289.2 318,247.6 380,196.4 442,119.6 504,30.0 504,350" fill="#0f62fe" opacity="0.08"/>
+<polyline points="70,350 132,349 194,348.5 256,349.5 318,348 380,349 442,348.5 504,349.5" fill="none" stroke="#8c8c8c" stroke-width="2"/>
+<polyline points="70,350.0 132,337.2 194,318.0 256,289.2 318,247.6 380,196.4 442,119.6 504,30.0" fill="none" stroke="#0f62fe" stroke-width="3"/>
+<circle cx="70" cy="350" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="132" cy="349" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="194" cy="348.5" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="256" cy="349.5" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="318" cy="348" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="380" cy="349" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="442" cy="348.5" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="504" cy="349.5" r="3.5" fill="#ffffff" stroke="#8c8c8c" stroke-width="1.5"/><circle cx="70" cy="350.0" r="4.5" fill="#0f62fe"/><circle cx="132" cy="337.2" r="4.5" fill="#0f62fe"/><circle cx="194" cy="318.0" r="4.5" fill="#0f62fe"/><circle cx="256" cy="289.2" r="4.5" fill="#0f62fe"/><circle cx="318" cy="247.6" r="4.5" fill="#0f62fe"/><circle cx="380" cy="196.4" r="4.5" fill="#0f62fe"/><circle cx="442" cy="119.6" r="4.5" fill="#0f62fe"/><circle cx="504" cy="30.0" r="4.5" fill="#0f62fe"/>
+<rect x="120" y="402" width="12" height="12" fill="#ffffff" stroke="#8c8c8c"/><text x="138" y="412" font-size="11" fill="#525252">RAG / NotebookLM</text>
+<rect x="300" y="402" width="12" height="12" fill="#0f62fe"/><text x="318" y="412" font-size="11" fill="#525252">LLM Wiki (바이브 옵시디언)</text>
+</svg></div>
+<h2>✅ 따라하기</h2>
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>첫 Query — 클로디안에 <code>/query</code> 명령으로 질문. (E에서 클리핑한 유튜브 자료 범위 안에서)<pre><code>/query 내가 넣은 영상들의 공통 주장은 무엇인가?</code></pre>명령어 없이 자연어로 <code>위키 안에서만 근거로 답해줘: …</code>라고 물어도 같은 절차(40_Query 기록 포함)로 동작합니다 — 볼트 규칙에 자연어 트리거가 등록되어 있습니다.</span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>답변을 읽고, 근거로 어떤 노트를 썼는지 확인.
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ Claudian — /query 답변 예시</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;overflow-x:auto">
+<span style="display:inline-block;border:1px solid #525252;padding:4px 10px;margin-bottom:8px;color:var(--inverse-ink)">/query 내가 넣은 영상들의 공통 주장은 무엇인가?</span><br>
+<b style="color:var(--inverse-ink)">위키 근거로만 답하겠습니다.</b> 세 영상에서 추출한 노트들을 종합합니다.<br><br>
+<b style="color:var(--inverse-ink)">답변: 세 영상의 공통 주장</b><br>
+"AI를 일회성 도구가 아니라, 내 지식·맥락을 갖춘 '직원/에이전트'처럼 만들어 업무를 위임·자동화하라."<br><br>
+근거를 층위별로 정리하면:<br>
+1) 모든 영상이 공유 — AI에게 일을 '위임'하는 방향: <span style="color:#78a9ff">바이브코딩 · AI Agent · 자율형 에이전트</span> …<br>
+2) 두 영상이 강하게 공유 — AI 잘 쓰는 사람 = '나만의 지식 기반'을 가진 사람: <span style="color:#78a9ff">LLM Wiki · 세컨드 브레인 · 옵시디언 LLM Wiki 구축법</span> …<br>
+<b style="color:var(--inverse-ink)">공통점의 본질</b>: "AI 성능 자체가 병목이 아니라, AI에게 줄 맥락(지식)과 위임 구조가 핵심" — 단, 김안토니오 영상은 위임 쪽에 치우쳐 '지식 기반 구축' 주장은 두 편에서 가장 강함.<br><br>
+<b style="color:var(--inverse-ink)">근거 노트</b><br>
+<span style="color:#78a9ff">옵시디언 LLM Wiki 시스템 (MOC) · LLM Wiki · 세컨드 브레인 · 옵시디언 · 자율형 에이전트 · 바이브코딩 · AI Agent …</span><br><br>
+이제 이 Q&amp;A를 <b style="color:var(--inverse-ink)">40_Query에 기록</b>합니다.<br>
+<span style="color:#78a9ff">📄 Write</span> 2026-06-11 영상들의 공통 주장.md <span style="color:#42be65">+38</span></div></div>
+<p class="note" style="margin:8px 0 0">확인 포인트 3가지 — ① 답이 "위키 근거로만"으로 시작하며 범위가 갇혀 있는가 ② <b>근거 노트</b>가 위키링크로 나열되는가(영상 자료가 아니라 분해된 위키 노트들) ③ 마지막에 Q&amp;A가 <b>40_Query에 자동 기록</b>되는가. 영상끼리의 공통·차이까지 종합하는 것이 단일 검색과 다른 점입니다.</p></span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span><code>/query</code>로 내 관심사 질문 2개 더 하기. (E에서 넣은 자료 범위 안에서 — 잘 아는 내용이니 답이 맞는지 직접 검증)</span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>가치 있는 답변 승격:<pre><code>방금 답변을 노트로 저장해줘</code></pre>
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ Claudian — 답변 승격 과정</div>
+<div style="background:var(--inverse-canvas);color:var(--inverse-ink-muted);padding:16px;font-family:'IBM Plex Mono',Consolas,monospace;font-size:12px;line-height:1.7;letter-spacing:0;overflow-x:auto">
+<b style="color:#42be65">☑ QUERY 처리 완료</b><br>
+· 근거 범위: <b style="color:var(--inverse-ink)">30_Wiki 한정 (외부 지식 미사용)</b><br>
+· 답변: 위 본문 — 핵심은 "AI를 일회성 도구가 아니라 내 지식·맥락을 갖춘 직원/에이전트로 만들어 위임·자동화하라"<br>
+· 기록: <span style="color:#78a9ff">40_Query/2026-06-11 영상들의 공통 주장.md</span> (<b style="color:var(--inverse-ink)">origin: query-answer, confirmed: false</b>)<br><br>
+이 답변을 위키로 <b style="color:var(--inverse-ink)">승격</b>하길 원하시면 말씀해 주세요. 예를 들어 30_Wiki/Concept에 「AI 네이티브 업무 전환의 공통 원칙」 노트로 신규 생성하거나, 기존 <span style="color:#78a9ff">옵시디언 LLM Wiki 시스템 (MOC)</span>에 '공통 주장' 섹션으로 추가하고 <b style="color:var(--inverse-ink)">confirmed: true</b>로 기록하겠습니다.<br><br>
+<span style="display:inline-block;border:1px solid #525252;padding:4px 10px;color:var(--inverse-ink)">방금 답변을 노트로 저장해줘</span><br>
+승격하겠습니다. 방금 답변을 <b style="color:var(--inverse-ink)">30_Wiki에 신규 Concept 노트로 저장</b>하고, 규칙대로 <b style="color:var(--inverse-ink)">origin: query-answer · confirmed: true</b>를 기록합니다.<br>
+<span style="color:#f1c21b;font-style:italic">Herding thoughts… (esc to interrupt · 20s)</span></div></div>
+<p class="note" style="margin:8px 0 0">승격 전후의 차이를 보세요 — 40_Query 기록은 <code>confirmed: false</code>(검토 전), 승격하면 위키에 <code>confirmed: true</code>(주인이 검증)로 저장됩니다. 이 체크 하나가 이후 답변에서 가중치 차이를 만듭니다. AI가 신규 노트 생성과 기존 노트(MOC) 추가 중 선택지를 제안하는 것도 규칙대로의 동작입니다.</p></span></label><label class="step"><input type="checkbox"><span class="n">5.</span><span>그래프 뷰 열기 — 1일차(모듈 D) 끝과 비교해 그래프가 자란 것 확인.
+<div style="border:1px solid var(--hairline);margin-top:12px">
+<div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 그래프 뷰 Before &amp; After</div>
+<div style="display:flex;flex-wrap:wrap">
+<div style="flex:1;min-width:min(280px,100%);border-right:1px solid var(--hairline)">
+<p class="note" style="margin:8px 12px 4px"><b>Before</b> — 모듈 D 직후 (PDF 1건 · MOC 허브 1개 · 노트 14개)</p><svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block"><rect width="440" height="380" fill="#161616"/><line x1="200" y1="200" x2="120" y2="105" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="235" y2="100" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="170" y2="145" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="265" y2="155" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="105" y2="170" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="310" y2="185" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="75" y2="220" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="280" y2="230" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="115" y2="270" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="215" y2="265" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="200" y2="320" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="120" y2="330" stroke="#444444" stroke-width="0.8"/><line x1="200" y1="200" x2="295" y2="320" stroke="#444444" stroke-width="0.8"/><line x1="120" y1="105" x2="105" y2="170" stroke="#333333" stroke-width="0.8"/><line x1="310" y1="185" x2="215" y2="265" stroke="#333333" stroke-width="0.8"/><line x1="170" y1="145" x2="265" y2="155" stroke="#333333" stroke-width="0.8"/><circle cx="360" cy="80" r="4" fill="#5a5a5a"/><text x="360" y="93" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_40_Query</text><circle cx="390" cy="150" r="4" fill="#5a5a5a"/><text x="390" y="163" font-size="8.5" fill="#5a5a5a" text-anchor="middle">AGENTS</text><circle cx="385" cy="250" r="4" fill="#5a5a5a"/><text x="385" y="263" font-size="8.5" fill="#5a5a5a" text-anchor="middle">convert</text><circle cx="370" cy="330" r="4" fill="#5a5a5a"/><text x="370" y="343" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_30_Wiki</text><circle cx="55" cy="60" r="4" fill="#5a5a5a"/><text x="55" y="73" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_50_Output</text><circle cx="300" cy="55" r="4" fill="#5a5a5a"/><text x="300" y="68" font-size="8.5" fill="#5a5a5a" text-anchor="middle">query</text><circle cx="120" cy="105" r="5" fill="#c6c6c6"/><text x="120" y="119" font-size="9" fill="#8c8c8c" text-anchor="middle">샘소타</text><circle cx="235" cy="100" r="5" fill="#c6c6c6"/><text x="235" y="114" font-size="9" fill="#8c8c8c" text-anchor="middle">Claude Code</text><circle cx="170" cy="145" r="5" fill="#c6c6c6"/><text x="170" y="159" font-size="9" fill="#8c8c8c" text-anchor="middle">AI 실습 교육 커리큘럼</text><circle cx="265" cy="155" r="5" fill="#c6c6c6"/><text x="265" y="169" font-size="9" fill="#8c8c8c" text-anchor="middle">업무 자동화 PRD 작성법</text><circle cx="105" cy="170" r="5" fill="#c6c6c6"/><text x="105" y="184" font-size="9" fill="#8c8c8c" text-anchor="middle">GPT Codex</text><circle cx="310" cy="185" r="5" fill="#c6c6c6"/><text x="310" y="199" font-size="9" fill="#8c8c8c" text-anchor="middle">바이브코딩</text><circle cx="75" cy="220" r="5" fill="#c6c6c6"/><text x="75" y="234" font-size="9" fill="#8c8c8c" text-anchor="middle">한솔아이원스</text><circle cx="280" cy="230" r="5" fill="#c6c6c6"/><text x="280" y="244" font-size="9" fill="#8c8c8c" text-anchor="middle">트러블슈팅 가이드</text><circle cx="115" cy="270" r="5" fill="#c6c6c6"/><text x="115" y="284" font-size="9" fill="#8c8c8c" text-anchor="middle">AX 교육</text><circle cx="215" cy="265" r="5" fill="#c6c6c6"/><text x="215" y="279" font-size="9" fill="#8c8c8c" text-anchor="middle">AI Agent</text><circle cx="200" cy="320" r="5" fill="#c6c6c6"/><text x="200" y="334" font-size="9" fill="#8c8c8c" text-anchor="middle">공통 프롬프트 패턴</text><circle cx="120" cy="330" r="5" fill="#c6c6c6"/><text x="120" y="344" font-size="9" fill="#8c8c8c" text-anchor="middle">보안·검증 수칙</text><circle cx="295" cy="320" r="5" fill="#c6c6c6"/><text x="295" y="334" font-size="9" fill="#8c8c8c" text-anchor="middle">4대 설계 원칙</text><circle cx="200" cy="200" r="10" fill="#e0e0e0"/><text x="200" y="223" font-size="9.5" fill="#c6c6c6" text-anchor="middle">실무 적용형 AI 도구 활용 교육 (MOC)</text></svg></div>
+<div style="flex:1;min-width:min(280px,100%)">
+<p class="note" style="margin:8px 12px 4px"><b>After</b> — 모듈 F 현재 (유튜브 3건 + 승격 노트 · MOC 허브 2개 · 노트 30+)</p><svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;display:block"><rect width="440" height="380" fill="#161616"/><line x1="165" y1="150" x2="95" y2="75" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="185" y2="60" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="255" y2="80" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="60" y2="125" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="130" y2="105" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="225" y2="110" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="305" y2="125" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="200" y2="165" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="75" y2="185" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="245" y2="180" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="340" y2="180" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="70" y2="250" stroke="#444444" stroke-width="0.8"/><line x1="165" y1="150" x2="125" y2="225" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="245" y2="180" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="340" y2="180" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="70" y2="250" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="125" y2="225" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="170" y2="255" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="60" y2="300" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="130" y2="300" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="225" y2="300" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="330" y2="300" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="375" y2="235" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="390" y2="290" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="245" y2="345" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="330" y2="345" stroke="#444444" stroke-width="0.8"/><line x1="280" y1="255" x2="390" y2="340" stroke="#444444" stroke-width="0.8"/><line x1="130" y1="105" x2="75" y2="185" stroke="#333333" stroke-width="0.8"/><line x1="185" y1="60" x2="200" y2="165" stroke="#333333" stroke-width="0.8"/><line x1="305" y1="125" x2="330" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="245" y1="180" x2="340" y2="180" stroke="#333333" stroke-width="0.8"/><line x1="245" y1="180" x2="225" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="170" y1="255" x2="225" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="70" y1="250" x2="60" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="225" y1="110" x2="75" y2="185" stroke="#333333" stroke-width="0.8"/><line x1="225" y1="300" x2="330" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="125" y1="225" x2="170" y2="255" stroke="#333333" stroke-width="0.8"/><line x1="255" y1="80" x2="305" y2="125" stroke="#333333" stroke-width="0.8"/><line x1="200" y1="165" x2="245" y2="180" stroke="#333333" stroke-width="0.8"/><line x1="375" y1="235" x2="390" y2="290" stroke="#333333" stroke-width="0.8"/><line x1="245" y1="345" x2="330" y2="345" stroke="#333333" stroke-width="0.8"/><line x1="95" y1="75" x2="60" y2="125" stroke="#333333" stroke-width="0.8"/><line x1="130" y1="300" x2="225" y2="300" stroke="#333333" stroke-width="0.8"/><line x1="165" y1="150" x2="280" y2="255" stroke="#333333" stroke-width="0.8"/><circle cx="400" cy="70" r="4" fill="#5a5a5a"/><text x="400" y="83" font-size="8.5" fill="#5a5a5a" text-anchor="middle">AGENTS</text><circle cx="415" cy="130" r="4" fill="#5a5a5a"/><text x="415" y="143" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_Entity</text><circle cx="35" cy="55" r="4" fill="#5a5a5a"/><text x="35" y="68" font-size="8.5" fill="#5a5a5a" text-anchor="middle">convert-eval</text><circle cx="35" cy="345" r="4" fill="#5a5a5a"/><text x="35" y="358" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_20_Raw</text><circle cx="140" cy="360" r="4" fill="#5a5a5a"/><text x="140" y="373" font-size="8.5" fill="#5a5a5a" text-anchor="middle">query</text><circle cx="415" cy="30" r="4" fill="#5a5a5a"/><text x="415" y="43" font-size="8.5" fill="#5a5a5a" text-anchor="middle">_README_Guide</text><circle cx="95" cy="75" r="5" fill="#c6c6c6"/><text x="95" y="89" font-size="9" fill="#8c8c8c" text-anchor="middle">옵시디언과 헤르메스 AI…</text><circle cx="185" cy="60" r="5" fill="#c6c6c6"/><text x="185" y="74" font-size="9" fill="#8c8c8c" text-anchor="middle">헤르메스 에이전트</text><circle cx="255" cy="80" r="5" fill="#c6c6c6"/><text x="255" y="94" font-size="9" fill="#8c8c8c" text-anchor="middle">제미나이 스파크</text><circle cx="60" cy="125" r="5" fill="#c6c6c6"/><text x="60" y="139" font-size="9" fill="#8c8c8c" text-anchor="middle">옵시디언</text><circle cx="130" cy="105" r="5" fill="#c6c6c6"/><text x="130" y="119" font-size="9" fill="#8c8c8c" text-anchor="middle">세컨드 브레인</text><circle cx="225" cy="110" r="5" fill="#c6c6c6"/><text x="225" y="124" font-size="9" fill="#8c8c8c" text-anchor="middle">옵시디언 LLM Wiki 구축법</text><circle cx="305" cy="125" r="5" fill="#c6c6c6"/><text x="305" y="139" font-size="9" fill="#8c8c8c" text-anchor="middle">자율형 에이전트</text><circle cx="200" cy="165" r="5" fill="#c6c6c6"/><text x="200" y="179" font-size="9" fill="#8c8c8c" text-anchor="middle">UX 디자인 에이전트 워크플로우</text><circle cx="75" cy="185" r="5" fill="#c6c6c6"/><text x="75" y="199" font-size="9" fill="#8c8c8c" text-anchor="middle">LLM Wiki</text><circle cx="245" cy="180" r="5" fill="#c6c6c6"/><text x="245" y="194" font-size="9" fill="#8c8c8c" text-anchor="middle">AI 네이티브 업무 전환의 공통 원칙</text><circle cx="340" cy="180" r="5" fill="#c6c6c6"/><text x="340" y="194" font-size="9" fill="#8c8c8c" text-anchor="middle">2026-06-11 영상들의 공통 주장</text><circle cx="70" cy="250" r="5" fill="#c6c6c6"/><text x="70" y="264" font-size="9" fill="#8c8c8c" text-anchor="middle">김안토니오</text><circle cx="125" cy="225" r="5" fill="#c6c6c6"/><text x="125" y="239" font-size="9" fill="#8c8c8c" text-anchor="middle">온프렘 AI</text><circle cx="170" cy="255" r="5" fill="#c6c6c6"/><text x="170" y="269" font-size="9" fill="#8c8c8c" text-anchor="middle">엔터프라이즈 코드 에이전트</text><circle cx="60" cy="300" r="5" fill="#c6c6c6"/><text x="60" y="314" font-size="9" fill="#8c8c8c" text-anchor="middle">반야AI</text><circle cx="130" cy="300" r="5" fill="#c6c6c6"/><text x="130" y="314" font-size="9" fill="#8c8c8c" text-anchor="middle">프롬프트 인젝션</text><circle cx="225" cy="300" r="5" fill="#c6c6c6"/><text x="225" y="314" font-size="9" fill="#8c8c8c" text-anchor="middle">바이브코딩</text><circle cx="330" cy="300" r="5" fill="#c6c6c6"/><text x="330" y="314" font-size="9" fill="#8c8c8c" text-anchor="middle">AI Agent</text><circle cx="375" cy="235" r="5" fill="#c6c6c6"/><text x="375" y="249" font-size="9" fill="#8c8c8c" text-anchor="middle">AX 교육</text><circle cx="390" cy="290" r="5" fill="#c6c6c6"/><text x="390" y="304" font-size="9" fill="#8c8c8c" text-anchor="middle">한솔아이원스</text><circle cx="245" cy="345" r="5" fill="#c6c6c6"/><text x="245" y="359" font-size="9" fill="#8c8c8c" text-anchor="middle">보안·검증 수칙</text><circle cx="330" cy="345" r="5" fill="#c6c6c6"/><text x="330" y="359" font-size="9" fill="#8c8c8c" text-anchor="middle">PRD 작성법</text><circle cx="390" cy="340" r="5" fill="#c6c6c6"/><text x="390" y="354" font-size="9" fill="#8c8c8c" text-anchor="middle">4대 설계 원칙</text><circle cx="165" cy="150" r="11" fill="#e0e0e0"/><text x="165" y="174" font-size="9.5" fill="#c6c6c6" text-anchor="middle">옵시디언 LLM Wiki 시스템 (MOC)</text><circle cx="280" cy="255" r="10" fill="#e0e0e0"/><text x="280" y="278" font-size="9.5" fill="#c6c6c6" text-anchor="middle">실무 적용형 AI 도구 활용 교육 (MOC)</text></svg></div>
+</div></div>
+<p class="note" style="margin:8px 0 0">달라진 점 3가지 — ① 자료 묶음마다 MOC 허브가 생겨 <b>허브 2개</b>가 서로 연결됨 ② E에서 만든 노트들이 D의 노트들과 교차 연결(같은 개념 누적) ③ 방금 승격한 「AI 네이티브 업무 전환의 공통 원칙」과 「영상들의 공통 주장」이 두 클러스터 사이에 자리잡음 — <b>질문이 자산이 되어 그래프를 잇는 것</b>, 이것이 컴파운딩의 시각적 증거입니다.</p></span></label><label class="step"><input type="checkbox"><span class="n">6.</span><span>모르는 게 생기면 그것도 클로디안에게 — "지금 내 Vault 구조 설명해줘" 같은 질문도 됩니다. <b>"니가 알아서 해"도 훌륭한 명령</b>입니다.</span></label>
+<h2>⚠️ 여기서 막혀요</h2>
+<table><tr><th style="width:42%">증상</th><th>해결</th></tr><tr><td>😵 답변에 내 자료에 없는 내용이 섞임</td><td><code>/query</code>로 시작했는지(또는 '위키 안에서만'을 명시했는지) 확인하세요. 둘 다 없으면 일반 지식으로 답합니다.</td></tr><tr><td>😵 쿼리·위키·스킬이 헷갈림</td><td>위키 = 쌓인 지식(명사), 쿼리 = 그 지식에 던지는 질문(동사), 스킬 = 자주 쓰는 명령의 단축키. 용어집을 참고하세요.</td></tr></table>
+<h2>🧠 스스로 확인 <span class="note">(질문을 클릭하면 답이 열립니다)</span></h2>
+<details><summary>Q1. Query가 일반 AI 질문과 다른 점은?</summary><div class="ans">근거 범위를 내 위키 안으로 가둔다는 점. 그래서 답변이 '정규분포의 중간값'이 아니라 내 자료에 최적화된 답이 됩니다.</div></details><details><summary>Q2. 컴파운딩이란?</summary><div class="ans">답변이 다시 노트(자산)가 되어, 다음 질문의 재료로 쓰이며 지식이 복리로 불어나는 순환.</div></details><details><summary>Q3. 내가 컨펌한 노트와 안 한 노트의 차이는?</summary><div class="ans">컨펌한 노트는 '주인이 검증한 자료'로 가중치가 높아져 이후 답변에서 더 신뢰됩니다.</div></details>
+<h2>📦 이 모듈의 산출물</h2>
+<div class="outbox"><label><input type="checkbox"><span>Query 3회 실행</span></label><label><input type="checkbox"><span>답변 노트 승격 1건 이상</span></label><label><input type="checkbox"><span>그래프 성장 확인</span></label></div>
+<nav class="bottomnav"><a href="E_Ingest.html">← E. 자료 등록 — Ingest</a><a href="G_개념정리.html">G. 개념 정리 — LLM Wiki vs RAG·NotebookLM →</a></nav>
+<p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+  var k=location.pathname.split('/').pop()+'_cb'+i;
+  try{ if(localStorage.getItem(k)==='1') cb.checked=true;
+  cb.addEventListener('change',function(){ localStorage.setItem(k, cb.checked?'1':'0'); }); }catch(e){}
+});
+</script>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>

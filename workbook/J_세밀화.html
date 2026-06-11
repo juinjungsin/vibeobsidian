@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모듈 J. 세밀화 — 위키는 정제를 반복한다 — 옵시디언 LLM Wiki Workbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
+<nav class="modnav"><a class="chip" href="A_사전준비물.html">A</a>
+<a class="chip" href="B_설치.html">B</a>
+<a class="chip" href="C_Vault생성.html">C</a>
+<a class="chip" href="D_온보딩.html">D</a>
+<a class="chip" href="E_Ingest.html">E</a>
+<a class="chip" href="F_Query.html">F</a>
+<a class="chip" href="G_개념정리.html">G</a>
+<a class="chip" href="H_산출물문서.html">H</a>
+<span class="divider">|</span>
+<a class="chip adv" href="I_GraphRAG.html">I</a>
+<a class="chip cur" href="J_세밀화.html">J</a>
+<a class="chip adv" href="K_Vault공유.html">K</a>
+<a class="chip adv" href="L_Index용어집.html">L</a>
+<a class="chip adv" href="M_그래프Join.html">M</a>
+<a class="chip adv" href="N_인사이트View.html">N</a>
+<a class="chip adv" href="O_프레임워크종합.html">O</a>
+<a class="chip adv" href="P_agentauto.html">P</a></nav>
+<header><span class="badge adv">후속 과정</span><h1>모듈 J. 세밀화 — 위키는 정제를 반복한다</h1><p class="subtitle">노트가 정교해질수록 MD가 어떻게 달라지는가 · ⏱ 후속 1교시</p></header>
+<div class="goalbox">🎯 <b>이 모듈이 끝나면</b> — 노트 1개를 더 잘게·정확하게 다듬으며 <b>위키가 살아있는 자산</b>임을 체감합니다.</div>
+<h2>💡 핵심 개념</h2>
+<div class="analogy">위키는 한 번 짓고 끝나는 건물이 아니라 <b>계속 가지치기하는 정원</b>입니다. 같은 노트도 정제를 거칠수록 답변 재료로서의 가치가 올라갑니다.</div>
+<div class="concept"><p>덩어리가 큰 노트는 검색 정확도를 떨어뜨립니다. 세밀화 = 더 작은 의미 단위로 재분할 + 프론트매터 보강.</p><p>나누는 방법은 둘입니다 — ① AI에게 "의미 단위로 쪼개줘"라고 맡기거나, ② 옵시디언 <b>Note Composer</b> 명령으로 내가 직접 떼어냅니다. 둘 다 목표는 같습니다: <b>한 노트 = 한 개념</b>.</p><p>같은 개념이 자료마다 다르게 적혀 충돌하면, AI가 "뭐가 맞아요?"라고 묻고 <b>전문가인 내가 판정</b>해 정리합니다.</p></div>
+<h2>🧩 옵시디언 공식 명령어 — Note Composer</h2>
+<div class="concept"><p>노트 분할·병합은 플러그인 설치 없이 옵시디언에 내장된 <b>Note Composer</b> 코어 플러그인으로 가능합니다(<code>설정 → 코어 플러그인 → Note Composer</code>, 기본 활성).</p>
+<table>
+<tr><th style="width:40%">명령어 (명령 팔레트)</th><th>동작</th></tr>
+<tr><td><code>Note composer: Extract current selection</code><br><span class="note">현재 선택 영역 추출</span></td><td>선택한 문단을 <b>새 노트로 떼어내고</b>, 원래 자리에는 그 노트로의 링크를 남깁니다. 큰 노트를 작은 단위로 쪼갤 때 쓰는 핵심 명령입니다.</td></tr>
+<tr><td><code>Note composer: Merge current file with another file</code><br><span class="note">다른 노트와 병합</span></td><td>너무 잘게 쪼갠 노트를 다시 합칩니다. 관련 링크는 자동으로 갱신됩니다.</td></tr>
+</table>
+<p class="note">실행: 명령 팔레트(<code>Ctrl/Cmd + P</code>)에서 명령 이름 입력 → <code>Enter</code> 대상 노트 끝에 추가 · <code>Shift+Enter</code> 앞에 추가 · <code>Ctrl/Cmd+Enter</code> 새 노트로 생성. 출처: <a href="https://help.obsidian.md/plugins/note-composer">help.obsidian.md/plugins/note-composer</a></p></div>
+<h2>✅ 따라하기</h2>
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>내용이 길거나 뭉뚱그려진 노트 1개 선택.</span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>AI 세밀화 명령:<pre><code>이 노트를 더 작은 의미 단위로 쪼개고 프론트매터를 보강해줘</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span>수동 분할(옵시디언 공식) — 독립된 한 문단을 드래그 선택 → 명령 팔레트에서 <code>Note composer: Extract current selection</code> → <code>Ctrl/Cmd+Enter</code>로 새 노트 생성. 원래 자리에 링크가 남는지 확인.</span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>전후 비교 — 노트 수·링크 수·프론트매터 변화 확인.</span></label><label class="step"><input type="checkbox"><span class="n">5.</span><span>충돌 정리 — "내 위키에서 서로 모순되는 내용 찾아줘" → 내가 판정 → 반영.</span></label>
+<h2>⚠️ 여기서 막혀요</h2>
+<table><tr><th style="width:42%">증상</th><th>해결</th></tr><tr><td>😵 너무 잘게 쪼개져 산만해짐</td><td>목적은 검색 정확도입니다. 한 노트 = 한 개념 수준이면 충분하고, 지나치면 합쳐달라고 하거나 <code>Note composer: Merge</code>로 되돌리면 됩니다.</td></tr><tr><td>😵 Extract·Merge 명령이 팔레트에 안 보임</td><td><code>설정 → 코어 플러그인</code>에서 <b>Note Composer</b>가 켜져 있는지 확인하세요. 꺼져 있으면 두 명령이 나타나지 않습니다.</td></tr></table>
+<h2>🧠 스스로 확인 <span class="note">(질문을 클릭하면 답이 열립니다)</span></h2>
+<details><summary>Q1. 노트가 클수록 생기는 문제는?</summary><div class="ans">질문과 관련 없는 내용까지 함께 딸려 와 답변 정확도가 떨어집니다.</div></details>
+<details><summary>Q2. 노트를 손으로 더 작게 나누는 옵시디언 공식 명령은?</summary><div class="ans">Note Composer 코어 플러그인의 <code>Extract current selection</code> — 선택한 부분을 새 노트로 떼어내고 원래 자리에 링크를 남깁니다. 반대로 합칠 땐 <code>Merge current file with another file</code>를 씁니다.</div></details>
+<h2>📦 이 모듈의 산출물</h2>
+<div class="outbox"><label><input type="checkbox"><span>세밀화 전후 비교 1건</span></label><label><input type="checkbox"><span>Note Composer로 노트 1개 직접 분할</span></label><label><input type="checkbox"><span>모순 판정·정리 1건</span></label></div>
+<nav class="bottomnav"><a href="I_GraphRAG.html">← I. GraphRAG — 관계가 답의 품질을 바꾼다</a><a href="L_Index용어집.html">L. Index — 용어집과 색인 →</a></nav>
+<p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+  var k=location.pathname.split('/').pop()+'_cb'+i;
+  try{ if(localStorage.getItem(k)==='1') cb.checked=true;
+  cb.addEventListener('change',function(){ localStorage.setItem(k, cb.checked?'1':'0'); }); }catch(e){}
+});
+</script>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>

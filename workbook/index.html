@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>옵시디언 LLM Wiki Workbook — 목차</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="용어집.html">📖 용어집 — 모르는 단어는 여기서 찾으세요</a></nav>
+<header><span class="badge">Workbook</span><h1>옵시디언 LLM Wiki·PKM·RAG 실습 Workbook</h1>
+<p class="subtitle">초보자가 따라하며 개념까지 익히는 모듈별 실습서 · A부터 O까지</p></header>
+<div class="goalbox">🎯 <b>이 과정의 목표</b> — 옵시디언을 AI가 읽고 쓰는 지식베이스(LLM Wiki)로 만들고, 내 자료로 프로젝트 산출물(PCD·MRD)을 뽑아내는 것. 핵심은 <b>질문할수록 자산이 쌓이는 복리 구조</b>입니다.</div>
+<h2>학습 흐름</h2>
+<div class="concept"><p><b>입문</b>: 준비(A) → 설치(B) → Vault(C) → 온보딩(D) → Ingest(E) → Query(F) → 개념(G) → 프로젝트(H)</p>
+<p><b>후속</b>: GraphRAG(I) → 세밀화(J) → 공유(K) → Index(L) → 결합(M) → 인사이트(N) → 종합(O) → 자동화(P)
+<span class="note">— 후속은 알파벳 순서(I→J→K→L→M→N→O→P)로 진행합니다.</span></p>
+<p class="note">진행 원칙: 일단 해본다 · 강사와 동일 환경 · 막히면 클로디안에게 자연어로 물어본다.</p></div>
+<h2>입문 과정</h2>
+<div class="cards"><a class="card" href="A_사전준비물.html"><b>A. 사전 준비물</b><div class="t">실습 환경 요건을 점검하고 계정을 준비한다 · ⏱ 15분</div></a><a class="card" href="B_설치.html"><b>B. 설치</b><div class="t">Node.js → 코덱스 CLI → 옵시디언 순서로 설치한다 · ⏱ 60~90분</div></a><a class="card" href="C_Vault생성.html"><b>C. Vault 생성</b><div class="t">첫 보관소(Vault)를 만든다 · ⏱ 15분</div></a><a class="card" href="D_온보딩.html"><b>D. 온보딩 — 스타터킷·스킬·변환</b><div class="t">표준 폴더 구조를 자동 생성하고 변환 파이프라인을 갖춘다 · ⏱ 70~90분</div></a><a class="card" href="E_Ingest.html"><b>E. 자료 등록 — Ingest</b><div class="t">자료 1건을 의미 단위로 분할해 위키로 만든다 · ⏱ 50분</div></a><a class="card" href="F_Query.html"><b>F. 질문과 답변 — Query & Compounding</b><div class="t">질문하고, 가치 있는 답변을 다시 자산으로 쌓는다 · ⏱ 50분</div></a><a class="card" href="G_개념정리.html"><b>G. 개념 정리 — LLM Wiki vs RAG·NotebookLM</b><div class="t">방금 경험한 것의 원리를 구분한다 · ⏱ 40분</div></a><a class="card" href="H_산출물문서.html"><b>H. 산출물 문서 흐름 — 프로젝트 적용</b><div class="t">위키 자산으로 PCD 초안을 만든다 · ⏱ 60분</div></a></div>
+<h2>후속 과정</h2>
+<div class="cards"><a class="card" href="I_GraphRAG.html"><b>I. GraphRAG — 관계가 답의 품질을 바꾼다</b><div class="t">노트 간 '관계 이름'을 chunk로 활용한다 · ⏱ 후속 1교시</div></a><a class="card" href="J_세밀화.html"><b>J. 세밀화 — 위키는 정제를 반복한다</b><div class="t">노트가 정교해질수록 MD가 어떻게 달라지는가 · ⏱ 후속 1교시</div></a><a class="card" href="K_Vault공유.html"><b>K. Vault 공유 — 혼자에서 팀으로</b><div class="t">공통 사용·Sync·오픈소스 분기를 이해한다 · ⏱ 후속 2교시</div></a><a class="card" href="L_Index용어집.html"><b>L. Index — 용어집과 색인</b><div class="t">위키의 사전을 만든다 · ⏱ 후속 2교시</div></a><a class="card" href="M_그래프Join.html"><b>M. 그래프 Join — Vault 결합</b><div class="t">Vault와 Vault를 연결해 시너지를 만든다 · ⏱ 후속 3교시</div></a><a class="card" href="N_인사이트View.html"><b>N. 그래프 인사이트 — View</b><div class="t">연결의 공통분모에서 새 통찰을 꺼낸다 · ⏱ 후속 4교시</div></a><a class="card" href="O_프레임워크종합.html"><b>O. 프레임워크 + Obsidian — 종합</b><div class="t">기존 산출물과 프레임워크를 결합해 최종 결과물을 만든다 · ⏱ 후속 4교시</div></a><a class="card" href="P_agentauto.html"><b>P. 자동화 — 볼트가 스스로 자란다</b><div class="t">스케줄로 리서치·Ingest·Query를 자동 순환, 사람은 승격만 한다 · ⏱ 후속 5교시</div></a></div>
+<h2>참고 자료</h2>
+<div class="cards"><a class="card" href="스타터킷.html"><b>📦 스타터킷</b><div class="t">폴더 구조·규칙·명령어(/ingest, /query) 시작 패키지 + 설치법</div></a><a class="card" href="용어집.html"><b>📖 용어집</b><div class="t">강의에 등장하는 모든 용어를 검색해서 찾기 · 58개</div></a></div>
+<h2>꼭 기억할 3가지 규칙</h2>
+<div class="concept">
+<p>1. <b>인박스에 넣는 것까지만 내 손으로.</b> 나머지는 전부 클로디안에게 명령합니다. 직접 폴더를 만지면 '쓰레기통'이 됩니다.</p>
+<p>2. <b>정제된 자료만 넣습니다.</b> 쓰레기를 넣으면 쓰레기가 나옵니다(GIGO). 오염은 미래의 답변까지 망칩니다.</p>
+<p>3. <b>모르면 클로디안에게 물어봅니다.</b> "지금 뭘 해야 해?", "니가 알아서 해"도 훌륭한 명령입니다.</p>
+</div>
+<p class="note">근거 문서: 옵시디언_LLM_Wiki_강의_커리큘럼.md (2026-06-10)</p>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>

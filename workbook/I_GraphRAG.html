@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>모듈 I. GraphRAG — 관계가 답의 품질을 바꾼다 — 옵시디언 LLM Wiki Workbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@300;400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"><style>
+/* IBM Carbon Design System — design.md 적용 (flat 0px · IBM Plex Sans · IBM Blue 단일 액센트) */
+:root{
+ --canvas:#ffffff;--surface-1:#f4f4f4;--surface-2:#e0e0e0;
+ --hairline:#e0e0e0;--hairline-strong:#161616;
+ --ink:#161616;--ink-muted:#525252;--ink-subtle:#8c8c8c;
+ --primary:#0f62fe;--blue-hover:#0353e9;--blue-80:#002d9c;
+ --success:#24a148;--warning:#f1c21b;--error:#da1e28;
+ --inverse-canvas:#161616;--inverse-ink:#ffffff;--inverse-ink-muted:#c6c6c6;
+}
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);
+ font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-weight:400;max-width:840px;margin:0 auto;padding:32px 24px 64px;
+ line-height:1.5;letter-spacing:0.16px}
+a{color:var(--primary);text-decoration:none}
+a:hover{color:var(--blue-hover);text-decoration:underline}
+h1{font-size:42px;font-weight:300;line-height:1.2;letter-spacing:0;color:var(--ink);
+ margin:8px 0 12px;border-bottom:1px solid var(--hairline);padding-bottom:16px}
+h2{font-size:24px;font-weight:400;line-height:1.33;letter-spacing:0;color:var(--ink);
+ margin-top:48px;border-bottom:1px solid var(--hairline);padding-bottom:8px}
+h3{font-size:18px;font-weight:600;line-height:1.4;letter-spacing:0;color:var(--ink);margin-top:32px}
+.subtitle{color:var(--ink-muted);margin-top:0;font-size:18px;line-height:1.5;letter-spacing:0}
+strong,b{color:var(--ink);font-weight:600}
+ul,ol{padding-left:1.4em}
+li{margin:4px 0}
+hr{border:none;border-top:1px solid var(--hairline);margin:48px 0}
+.topnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.topnav .home{margin-right:8px;font-weight:400;text-decoration:none;background:var(--canvas);
+ color:var(--primary);border:1px solid var(--primary);padding:6px 12px;border-radius:0}
+.topnav .home:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.brand{display:inline-flex;align-items:center;margin-right:8px}
+.brand img{height:42px;width:auto;display:block}
+.topnav:has(+.modnav){margin-bottom:8px}
+.modnav{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:32px;font-size:14px;letter-spacing:0.16px}
+.chip{display:inline-block;width:32px;text-align:center;padding:4px 0;border-radius:0;
+ background:var(--canvas);border:1px solid var(--hairline);color:var(--ink-muted);
+ text-decoration:none;font-weight:400;font-size:14px}
+.chip:hover{background:var(--surface-1);text-decoration:none}
+.chip.cur{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.chip.adv{border-style:dashed}
+.divider{color:var(--surface-2);margin:0 2px}
+.badge{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:3px 10px;border-radius:0;background:var(--surface-1);color:var(--ink);
+ border:1px solid var(--hairline);margin-bottom:8px}
+.badge.adv{background:var(--canvas);border-style:dashed}
+.goalbox{background:var(--surface-1);border-left:3px solid var(--success);
+ padding:16px;border-radius:0;margin-top:16px}
+.concept{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:16px 24px;margin:12px 0}
+.analogy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:16px;border-radius:0;margin:12px 0}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--canvas);
+ border:1px solid var(--hairline);border-radius:0;padding:12px 16px;margin:8px 0}
+.step input{margin-top:5px;transform:scale(1.25);accent-color:var(--primary);flex-shrink:0}
+.step .n{font-weight:600;color:var(--primary);flex-shrink:0}
+.step>span:last-child{min-width:0;flex:1}
+pre{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;
+ padding:16px;overflow-x:auto;margin:8px 0 0;font-size:14px;line-height:1.5;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+code{background:var(--surface-1);padding:2px 6px;border-radius:0;font-size:0.875em;
+ font-family:'IBM Plex Mono',Consolas,monospace;letter-spacing:0}
+pre code{background:none;padding:0;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;line-height:1.29;letter-spacing:0.16px}
+th{background:var(--surface-1);color:var(--ink);font-weight:600;text-align:left}
+th,td{border:1px solid var(--hairline);padding:12px 16px;vertical-align:top}
+tr:nth-child(even) td{background:var(--canvas)}
+details{background:var(--canvas);border:1px solid var(--hairline);border-radius:0;
+ padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)}
+.outbox{background:var(--surface-1);border:1px solid var(--hairline);border-radius:0;padding:16px 24px}
+.outbox label{display:flex;gap:8px;align-items:flex-start;margin:8px 0}
+.outbox input{margin-top:5px;transform:scale(1.2);accent-color:var(--success)}
+.bottomnav{display:flex;justify-content:space-between;margin-top:48px;gap:12px}
+.bottomnav a{text-decoration:none;background:var(--canvas);color:var(--primary);
+ border:1px solid var(--primary);padding:12px 16px;border-radius:0;font-weight:400;font-size:14px}
+.bottomnav a:hover{background:var(--primary);color:var(--inverse-ink);text-decoration:none}
+.note{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.card{border:1px solid var(--hairline);border-radius:0;padding:24px;
+ text-decoration:none;color:var(--ink);background:var(--canvas)}
+.card:hover{background:var(--surface-1);text-decoration:none}
+.card b{color:var(--ink);font-weight:600}
+.card .t{font-size:14px;color:var(--ink-muted);letter-spacing:0.16px}
+.searchbox{position:sticky;top:0;background:var(--canvas);padding:16px 0;z-index:5;
+ border-bottom:1px solid var(--hairline)}
+.searchbox input{width:100%;padding:11px 16px;font-size:16px;letter-spacing:0.16px;
+ font-family:inherit;background:var(--surface-1);color:var(--ink);
+ border:none;border-bottom:1px solid var(--hairline-strong);border-radius:0;outline:none}
+.searchbox input:focus{border-bottom:2px solid var(--primary)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.fbtn{border:1px solid var(--hairline);background:var(--canvas);color:var(--ink-muted);
+ border-radius:0;padding:6px 16px;cursor:pointer;font-size:14px;letter-spacing:0.16px;font-family:inherit}
+.fbtn:hover{background:var(--surface-1)}
+.fbtn.on{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+.term{border:1px solid var(--hairline);border-radius:0;padding:16px 24px;margin:12px 0;background:var(--canvas)}
+.term h3{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink)}
+.term .en{font-weight:400;color:var(--ink-subtle);font-size:12px;letter-spacing:0.32px}
+.term .cat{display:inline-block;font-size:12px;font-weight:400;letter-spacing:0.32px;
+ padding:2px 8px;border-radius:0;background:var(--surface-1);color:var(--ink-muted);
+ margin-left:8px;vertical-align:middle}
+.term .def{margin:4px 0}
+.term .easy{background:var(--surface-1);border-left:3px solid var(--primary);
+ padding:8px 16px;border-radius:0;margin:8px 0;font-size:14px;line-height:1.5}
+.term .mod{font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)}
+.term.bonus{border-style:dashed;background:var(--canvas)}
+.count{font-size:12px;letter-spacing:0.32px;color:var(--ink-subtle);margin:8px 0 0}
+.nohit{display:none;color:var(--ink-muted);text-align:center;padding:32px 0}
+@media(max-width:672px){.cards{grid-template-columns:1fr}h1{font-size:32px}}
+
+pre{position:relative;padding-right:72px}
+.copybtn{position:absolute;top:8px;right:8px;background:var(--canvas);border:1px solid var(--hairline);
+ color:var(--ink-muted);font-family:'IBM Plex Sans KR','IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+ font-size:12px;letter-spacing:0.32px;padding:4px 10px;cursor:pointer;border-radius:0}
+.copybtn:hover{background:var(--primary);color:var(--inverse-ink);border-color:var(--primary)}
+</style></head>
+<body>
+<nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
+<nav class="modnav"><a class="chip" href="A_사전준비물.html">A</a>
+<a class="chip" href="B_설치.html">B</a>
+<a class="chip" href="C_Vault생성.html">C</a>
+<a class="chip" href="D_온보딩.html">D</a>
+<a class="chip" href="E_Ingest.html">E</a>
+<a class="chip" href="F_Query.html">F</a>
+<a class="chip" href="G_개념정리.html">G</a>
+<a class="chip" href="H_산출물문서.html">H</a>
+<span class="divider">|</span>
+<a class="chip cur" href="I_GraphRAG.html">I</a>
+<a class="chip adv" href="J_세밀화.html">J</a>
+<a class="chip adv" href="K_Vault공유.html">K</a>
+<a class="chip adv" href="L_Index용어집.html">L</a>
+<a class="chip adv" href="M_그래프Join.html">M</a>
+<a class="chip adv" href="N_인사이트View.html">N</a>
+<a class="chip adv" href="O_프레임워크종합.html">O</a>
+<a class="chip adv" href="P_agentauto.html">P</a></nav>
+<header><span class="badge adv">후속 과정</span><h1>모듈 I. GraphRAG — 관계가 답의 품질을 바꾼다</h1><p class="subtitle">노트 간 '관계 이름'을 chunk로 활용한다 · ⏱ 후속 1교시</p></header>
+<div class="goalbox">🎯 <b>이 모듈이 끝나면</b> — 링크에 <b>관계 이름</b>을 붙였을 때 답변 품질이 어떻게 달라지는지 확인합니다.</div>
+<h2>💡 핵심 개념</h2>
+<div class="analogy">"철수—영희"라고 선만 그어진 지도와 "철수—(동생)—영희"라고 적힌 지도. 길 이름이 있어야 AI가 <b>관계를 따라 추론</b>할 수 있습니다.</div>
+<div class="concept"><p>일반 링크 = 연결만 표시. GraphRAG = <b>무슨 관계로 연결됐는지(causes, mitigates, enables…)</b>까지 자료로 씁니다.</p><p>노트 간 관계 자체가 검색 단위(chunk)가 되어, 여러 노트를 건너뛰는 종합 질문에 강해집니다.</p></div>
+<h2>🔧 참고 도구 — Graphify</h2>
+<div class="analogy">위 개념을 자동화한 실제 오픈소스 도구입니다. 손으로 관계 라벨을 다는 대신, 코드·PDF·이미지를 분석해 <b>지식 그래프를 자동 생성</b>합니다.</div>
+<div class="concept"><ul>
+<li><b>관계 추출</b> — 소스에서 직접 찾은 관계(EXTRACTED)와 신뢰도 점수가 붙은 추론 관계(INFERRED)를 구분해 기록합니다.</li>
+<li><b>임베딩 없이 작동</b> — 벡터 임베딩 대신 그래프 토폴로지로 검색해, RAG와 다른 방식으로 종합 질문에 답합니다.</li>
+<li><b>위키 생성(<code>--wiki</code>)</b> — 커뮤니티(주제 묶음)별 마크다운과 <code>index.md</code>를 만들어, 옵시디언식 노트 탐색과 그대로 이어집니다.</li>
+<li><b>클로드·코덱스 연동</b> — AI가 파일을 뒤지기 전에 <code>GRAPH_REPORT.md</code>로 핵심 개념(god node)과 구조를 먼저 파악합니다.</li>
+</ul>
+<p class="note">출처: <a href="https://github.com/safishamsi/graphify/blob/v8/docs/translations/README.ko-KR.md">github.com/safishamsi/graphify (한국어 README)</a> · 이 모듈은 개념 이해가 목적이며 도구 설치는 선택입니다.</p></div>
+<h2>✅ 따라하기</h2>
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>내 위키에서 관련 깊은 노트 2~3개 고르기.</span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>관계 라벨 붙이기 — 아래 프롬프트를 그대로 복사해 실행하고, <code>[[여기에 대상 노트명 입력]]</code>만 내 노트명으로 바꾼다:<pre style="white-space:pre-wrap;word-break:break-word"><code>노트 간 관계를 GraphRAG 수준으로 분석하고, 각 노트의 검색 품질을 높이기 위해 관계형 링크를 추가해줘.
+
+## 목적
+
+Obsidian Wiki의 단순 wikilink를 보강하여, 노트 간 관계가 검색과 추론에 잘 활용되도록 만든다.
+각 관계는 단순히 "관련 있음"이 아니라 관계명, 방향, 근거, 검색 문장, 확신도를 포함해야 한다.
+
+## 대상
+
+다음 노트 또는 MOC를 기준으로 분석한다.
+
+- 대상 노트: [[여기에 대상 노트명 입력]]
+
+## 작업 범위
+
+1. 기본 탐색 범위는 `30_Wiki`로 한정한다.
+2. 필요할 때만 `20_Raw`를 근거 확인용으로 읽는다.
+3. 외부 지식, 인터넷 검색, 일반 상식은 사용하지 않는다.
+4. `20_Raw`는 수정하지 않는다.
+5. 기존 frontmatter는 보존한다.
+
+## 관계 후보 수집 기준
+
+다음 정보를 바탕으로 관계 후보를 찾는다.
+
+- frontmatter의 `related`
+- 본문 내 wikilink
+- 같은 `source`를 가진 sibling note
+- MOC에서 인접하게 묶인 노트
+- 같은 장, 같은 주제, 같은 실행 흐름에 속한 노트
+
+약한 관계는 제외하고, 검색 품질을 높일 수 있는 강한 관계만 선택한다.
+
+## 관계명 기준
+
+각 관계에는 아래 중 하나의 관계명을 붙인다.
+
+- 원인이다
+- 결과이다
+- 보완한다
+- 구체화한다
+- 추상화한다
+- 사례이다
+- 절차다
+- 전제다
+- 대조된다
+- 포함한다
+- 참조한다
+
+"관련있다"처럼 모호한 관계명은 사용하지 않는다.
+
+## 작성 형식
+
+각 대상 노트 본문에 다음 섹션을 추가하거나 갱신한다.
+
+```markdown
+## 관계형 연결 노트
+
+- [[대상 노트]]
+  - 관계: 구체화한다
+  - 방향: 이 노트 → 대상 노트
+  - 근거: 두 노트의 본문 또는 Raw에 근거한 1문장 설명
+  - 검색 문장: 나중에 검색에 걸릴 자연어 문장 1개
+  - 확신도: 높음 | 중간 | 낮음
+```
+
+## 작성 규칙
+
+- YAML frontmatter의 `related:`는 링크 목록으로만 유지한다.
+- 관계명, 방향, 근거, 검색 문장, 확신도는 본문에만 기록한다.
+- wikilink는 반드시 클릭 가능한 [[노트명]] 형식으로 유지한다.
+- 한 노트당 많은 약한 관계보다 3~10개의 강한 관계를 우선한다.
+- 관계 방향을 반드시 명시한다.
+- 근거가 불충분하면 관계를 만들지 말고 보류한다.
+
+## 검증
+
+작업 후 반드시 다음을 검증한다.
+
+- 모든 wikilink 대상 노트가 존재하는가
+- frontmatter가 손상되지 않았는가
+- `## 관계형 연결 노트` 섹션이 중복 생성되지 않았는가
+- 관계명이 구체적인가
+- 방향이 명확한가
+- 근거 문장이 실제 노트 내용에 기반하는가
+
+검증은 UTF-8 파일 기반으로 수행한다.
+
+## 결과 보고
+
+마지막에 다음을 보고한다.
+
+- 처리 노트 수
+- 추가/갱신 관계 수
+- 사용한 관계명 목록
+- 깨진 링크 여부
+- frontmatter 손상 여부
+- 보류한 낮은 확신도 후보</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span>라벨 전후로 같은 종합 질문을 던져 답변 비교 — "A와 B를 함께 고려하면 어떤 결론이 나오나?"</span></label>
+<h2>⚠️ 여기서 막혀요</h2>
+<table><tr><th style="width:42%">증상</th><th>해결</th></tr><tr><td>😵 관계 이름을 뭐라고 붙일지 모르겠음</td><td>동사로 생각하세요 — '~의 원인이다', '~를 보완한다', '~를 가능하게 한다'. 정답보다 일관성이 중요합니다.</td></tr></table>
+<h2>🧠 스스로 확인 <span class="note">(질문을 클릭하면 답이 열립니다)</span></h2>
+<details><summary>Q1. 일반 링크와 GraphRAG식 연결의 차이는?</summary><div class="ans">연결 여부만 vs 연결의 의미(관계 이름)까지. 관계가 있어야 AI가 추론 경로로 쓸 수 있습니다.</div></details>
+<h2>📦 이 모듈의 산출물</h2>
+<div class="outbox"><label><input type="checkbox"><span>관계 라벨 노트 1쌍 이상</span></label><label><input type="checkbox"><span>라벨 전후 답변 비교 경험</span></label></div>
+<nav class="bottomnav"><a href="H_산출물문서.html">← H. 산출물 문서 흐름 — 프로젝트 적용</a><a href="J_세밀화.html">J. 세밀화 — 위키는 정제를 반복한다 →</a></nav>
+<p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>
+<script>
+document.querySelectorAll('input[type=checkbox]').forEach(function(cb,i){
+  var k=location.pathname.split('/').pop()+'_cb'+i;
+  try{ if(localStorage.getItem(k)==='1') cb.checked=true;
+  cb.addEventListener('change',function(){ localStorage.setItem(k, cb.checked?'1':'0'); }); }catch(e){}
+});
+</script>
+<script>
+document.querySelectorAll('pre').forEach(function(p){
+  var c=p.querySelector('code'); if(!c) return;
+  if(p.querySelector('.copybtn')) return;
+  var b=document.createElement('button'); b.className='copybtn'; b.type='button'; b.textContent='복사';
+  b.addEventListener('click',function(e){
+    e.preventDefault(); e.stopPropagation();
+    var t=c.innerText;
+    function ok(){b.textContent='복사됨 ✓'; setTimeout(function(){b.textContent='복사';},1500);}
+    function fb(){var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy'); ok();}catch(err){}
+      document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb);}else{fb();}
+  });
+  p.appendChild(b);
+});
+</script>
+</body></html>
