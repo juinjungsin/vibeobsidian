@@ -62,16 +62,18 @@ git clone <이 저장소 주소>
 
 입문 A~H를 마친 뒤 진행합니다.
 
-| 순서 | 모듈 | 한 줄 |
-|:---:|------|------|
-| **I** | [GraphRAG](workbook/I_GraphRAG.html) | 노트 간 '관계 이름'이 답의 품질을 바꾼다 |
-| **J** | [세밀화](workbook/J_세밀화.html) | 위키는 정제를 반복한다 |
-| **K** | [Vault 공유](workbook/K_Vault공유.html) | 혼자에서 팀으로 |
-| **L** | [Index](workbook/L_Index용어집.html) | 용어집과 색인 |
-| **M** | [그래프 Join](workbook/M_그래프Join.html) | Vault와 Vault를 결합 |
-| **N** | [인사이트 View](workbook/N_인사이트View.html) | 연결의 공통분모에서 새 통찰 |
-| **O** | [프레임워크 + Obsidian](workbook/O_프레임워크종합.html) | 산출물 × 프레임워크 종합 |
-| **P** | [자동화](workbook/P_agentauto.html) | 스케줄로 볼트가 스스로 자란다 |
+| 순서 | 모듈 | 한 줄 | 소요 |
+|:---:|------|------|:---:|
+| **I** | [GraphRAG](workbook/I_GraphRAG.html) | 노트 간 '관계 이름'이 답의 품질을 바꾼다 | 40분 |
+| **J** | [세밀화](workbook/J_세밀화.html) | 위키는 정제를 반복한다 | 35분 |
+| **K** | [Vault 공유](workbook/K_Vault공유.html) | 혼자에서 팀으로 | 30분 |
+| **L** | [Index](workbook/L_Index용어집.html) | 용어집과 색인 | 30분 |
+| **M** | [그래프 Join](workbook/M_그래프Join.html) | Vault와 Vault를 결합 | 35분 |
+| **N** | [인사이트 View](workbook/N_인사이트View.html) | 연결의 공통분모에서 새 통찰 | 30분 |
+| **O** | [프레임워크 + Obsidian](workbook/O_프레임워크종합.html) | 산출물 × 프레임워크 종합 | 50분 |
+| **P** | [자동화](workbook/P_agentauto.html) | 스케줄로 볼트가 스스로 자란다 | 50분 |
+
+> **후속 총 5시간(300분)** — 표준 1교시(≈50분) 기준으로 모듈 분량에 맞춰 배분. 입문(6.5~7.3시간)과 합치면 **전체 약 11.5~12.3시간**.
 
 ---
 
