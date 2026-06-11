@@ -158,7 +158,7 @@ details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)
 <tr><td>자료가 흩어짐</td><td>PPT, PDF, HWP, 웹자료, 메모가 각자 따로 존재</td><td>Obsidian Vault와 <code>raw/wiki/output</code> 구조로 통합</td></tr>
 <tr><td>다시 찾기 어려움</td><td>예전에 쓴 강의자료를 매번 다시 검색</td><td>Wiki-link, Backlink, Search, Graph View로 재탐색</td></tr>
 <tr><td>AI에 매번 설명해야 함</td><td>강의 맥락, 고객사 맥락을 매번 프롬프트에 반복</td><td>LLM Wiki를 통해 재사용 가능한 맥락 구축</td></tr>
-<tr><td>자료 변환 품질이 낮음</td><td>PDF/PPT를 요약하면 표·그림·출처가 사라짐</td><td>원본 보존, <code>sources</code> 속성, 검수 체크리스트 적용</td></tr>
+<tr><td>자료 변환 품질이 낮음</td><td>PDF/PPT를 요약하면 표·그림·출처가 사라짐</td><td>원본 보존, <code>source</code> 속성, 검수 체크리스트 적용</td></tr>
 <tr><td>시각화가 부족함</td><td>노트가 쌓여도 구조가 보이지 않음</td><td>Graph View와 Canvas로 지식 구조 시각화</td></tr>
 </table>
 
@@ -175,8 +175,8 @@ details .ans{margin-top:8px;padding-top:8px;border-top:1px solid var(--hairline)
 <div class="concept" style="border-left:3px solid var(--warning)">
 <h3 style="margin-top:0">－ 한계와 보완 <span class="note">운영 규칙 필요</span></h3>
 <div class="pc-item"><b>· 위키 페이지 직접 편집 비권장</b><span>재컴파일 시 LLM이 wiki 페이지를 다시 생성하면 사용자의 수동 편집과 충돌할 수 있다. 개인 메모는 별도 폴더에 두고 wiki-link로 연결하는 규칙이 필요하다.</span></div>
-<div class="pc-item"><b>· 인간의 거버넌스 레이어 필요</b><span>Lint 규칙, 검수 체크리스트, <code>sources</code> 속성으로 자동 생성 결과를 관리해야 한다.</span></div>
-<div class="pc-item"><b>· 기술적 의존성</b><span>Node 18+, Git, 포트 <code>27124</code>, MCP 서버 등은 입문자에게 진입 장벽이 될 수 있다. 설치 모듈, 원클릭 스크립트, 트러블슈팅 가이드가 전제되어야 한다.</span></div>
+<div class="pc-item"><b>· 인간의 거버넌스 레이어 필요</b><span>Lint 규칙, 검수 체크리스트, <code>source</code> 속성(출처)으로 자동 생성 결과를 관리해야 한다.</span></div>
+<div class="pc-item"><b>· 기술적 의존성</b><span>Node.js(LTS), 코덱스/클로드 CLI, 옵시디언, Claudian 플러그인 설치(필요 시 MCP 서버 연동)는 입문자에게 진입 장벽이 될 수 있다. 단계별 설치 모듈과 트러블슈팅 가이드가 전제되어야 한다.</span></div>
 <div class="pc-item"><b>· 외부 API 의존</b><span>Claude/Codex API를 거치면 로컬 중심 데이터 소유권과 보안 민감도가 약해질 수 있다. 민감 자료는 로컬 처리와 제외 기준을 먼저 정해야 한다.</span></div>
 <div class="pc-item"><b>· 기존 자산 통합 방식</b><span>Dataview, Templater, Zettelkasten 자산은 폴더·속성·링크 규칙을 정한 뒤 단계적으로 연결해야 한다.</span></div>
 </div>
