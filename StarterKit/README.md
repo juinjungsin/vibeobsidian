@@ -2,34 +2,46 @@
 
 옵시디언 + 클로디안(코덱스/클로드) 환경에서 LLM Wiki를 시작하는 표준 패키지입니다.
 
-## 구성
+## 폴더 구조
 
-- 폴더 구조 5단계: `10_Inbox → 20_Raw → 30_Wiki → 40_Query → 50_Output`
-- 폴더 간 규칙: `CLAUDE.md`(클로드용) / `AGENTS.md`(코덱스용) — 내용 동일
-- 자체 명령어 2종: `/ingest`, `/query` — 원본은 `00_Setup/commands/`에 있고, 온보딩 때 AI가 자동 설치합니다
+```
+Vault/
+├── CLAUDE.md / AGENTS.md / README.md   ← 규칙·안내 (Vault 루트 필수)
+├── 10_Inbox/        ← 사용자가 파일을 넣는 유일한 폴더
+├── 20_Raw/          ← 메타데이터 장착 원본 (영구 보관, 수정 금지)
+├── 30_Wiki/         ← AI 자동 생성 지식 베이스 (사용자 직접 편집 금지)
+│   ├── Concept/
+│   ├── Entity/
+│   ├── Guide/
+│   └── MOC/
+├── 40_Query/        ← /query 질문·답변 임시 기록
+├── 50_Project/      ← Wiki 기반 작업 공간 (사용자 검토·수정 가능)
+│   ├── 51_PCD/
+│   ├── 52_Empathy_Map/
+│   └── 53_Customer_Journey_Map/
+├── 60_Output/       ← 최종 완성 산출물만 저장
+└── 90_Settings/     ← 명령어 원본·시스템 파일 (AI 쓰기 금지)
+    └── commands/
+        ├── ingest.md
+        └── query.md
+```
 
-## 설치 (3단계 — 숨김 폴더를 만질 필요 없습니다)
+처리 흐름: **Inbox → Raw → Wiki → Project → Output**
+Query는 흐름과 병행하는 탐색 지원 계층.
 
-1. 압축을 풀면 생기는 StarterKit 폴더 **안의 내용물 전체**를
-   내 Vault 루트(`.obsidian` 폴더와 같은 층)에 붙여넣습니다.
-   - 같은 이름의 폴더가 없으므로 충돌·덮어쓰기 고민이 없습니다.
-   - StarterKit 폴더째 넣으면 규칙이 인식되지 않으니 내용물만 넣으세요.
+## 설치 (2단계)
 
-   ```
-   내Vault폴더/
-   ├─ .obsidian/  .claudian/  .claude/   ← 자동 생성 (신경 쓸 필요 없음)
-   ├─ CLAUDE.md  AGENTS.md  README.md
-   ├─ 00_Setup/commands/                 ← 명령어 원본 (AI가 자동 설치)
-   └─ 10_Inbox/ 20_Raw/ 30_Wiki/ 40_Query/ 50_Output/
-   ```
+1. 이 폴더 **안의 내용물 전체**를 Vault 루트(`.obsidian` 폴더와 같은 층)에 붙여넣는다.
 
-2. 옵시디언에서 클로디안을 열고 입력합니다:
-   「CLAUDE.md(또는 AGENTS.md)의 규칙을 읽고 이 Vault에 적용해줘」
-   → AI가 명령어 설치(.claude/commands 복사)와 폴더 확인까지 자동으로 수행합니다.
+2. 클로드(또는 코덱스)에게 입력한다:
+   「CLAUDE.md의 규칙을 읽고 이 Vault에 적용해줘」
+   → AI가 `90_Settings/commands/` → `.claude/commands/` 자동 설치 + 폴더 확인까지 수행.
 
-3. 테스트: `10_Inbox` 에 파일 1개를 넣고 `/ingest` 를 입력합니다.
-   위키 노트가 생성되면 설치 완료입니다.
+3. 테스트: `10_Inbox`에 파일 1개를 넣고 `/ingest` 입력. 위키 노트가 생성되면 완료.
 
-## 사용 규칙 한 줄 요약
+## 사용 규칙 요약
 
-파일을 넣는 것은 `10_Inbox` 까지만 내 손으로, 나머지는 전부 명령으로.
+- 파일 입력: `10_Inbox`만
+- Wiki(`30_Wiki`): AI 전용, 사용자 직접 편집 금지
+- Project(`50_Project`): 사용자 자유롭게 검토·수정 가능
+- Settings(`90_Settings`): 사용자 전용, AI 읽기만 허용

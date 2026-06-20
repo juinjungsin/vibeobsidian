@@ -15,8 +15,9 @@ verify_*.png
 workbook/수정요청_1.txt
 *.tmp
 
-# ── 배포용 zip (폴더 내용물이 정본) ──
+# ── zip: 작업본은 제외하되 배포 정본(StarterKit.zip)만 추적 ──
 *.zip
+!StarterKit/StarterKit.zip
 
 # ── 루트의 임시 화면 캡처 ──
 /화면 캡처 *.png

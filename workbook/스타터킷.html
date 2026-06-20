@@ -122,46 +122,54 @@ pre{position:relative;padding-right:72px}
 </style></head>
 <body>
 <nav class="topnav"><a class="brand" href="intro.html"><img src="icon_vibeobsidian.png" alt="바이브 옵시디언"></a><a class="home" href="intro.html">🏠 소개</a><a class="home" href="index.html">목차</a><a class="home" href="용어집.html">📖 용어집</a></nav>
-<header><span class="badge">스타터킷 v1.0</span><h1>📦 바이브 옵시디언 스타터킷</h1>
+<header><span class="badge">스타터킷 v1.1</span><h1>📦 바이브 옵시디언 스타터킷</h1>
 <p class="subtitle">폴더 구조 + 폴더 간 규칙 + 자체 명령어(/ingest, /query)를 담은 시작 패키지</p></header>
 <div class="goalbox">🎯 <b>이것 하나로</b> — Vault에 복사하고 규칙을 적용하면, 합의된 파일 처리 흐름
-<b>Inbox → Raw → Wiki → Query → Output</b>이 명령어 2개로 작동합니다. (모듈 D 온보딩에서 사용)</div>
+<b>Inbox → Raw → Wiki → Project → Output</b>이 명령어 2개로 작동합니다. (모듈 D 온보딩에서 사용)
+<br><span class="note">※ Query는 흐름과 병행하는 탐색 지원 계층입니다.</span></div>
 
 <h2>📁 폴더 구조</h2>
-<pre><code>StarterKit/
+<pre><code>StarterKit_01/
 ├─ CLAUDE.md                 ← 클로드용 규칙(헌법)
 ├─ AGENTS.md                 ← 코덱스용 규칙(내용 동일)
 ├─ README.md                 ← 설치·온보딩 안내
-├─ 00_Setup/commands/
-│   ├─ ingest.md             ← /ingest 명령 원본 (온보딩 때 AI가 자동 설치)
-│   └─ query.md              ← /query 명령 원본
 ├─ 10_Inbox/                 ← 자료 입장 (내 손이 닿는 유일한 폴더)
 ├─ 20_Raw/                   ← 메타데이터 장착 후 영구 보관·출처 추적
-├─ 30_Wiki/
+├─ 30_Wiki/                  ← AI 자동 생성 지식 베이스 (사용자 직접 편집 금지)
 │   ├─ Concept/  Entity/  Guide/  MOC/
-├─ 40_Query/                 ← 질문·답변 기록
-└─ 50_Output/                ← 최종 산출물(PCD·MRD·보고서)</code></pre>
+├─ 40_Query/                 ← 질문·답변 임시 기록 (병행 탐색 계층)
+├─ 50_Project/               ← Wiki 기반 프로젝트 작업 공간 (사용자 수정 가능)
+│   ├─ 51_PCD/               ← 개념설계
+│   ├─ 52_Empathy_Map/       ← 공감 지도
+│   └─ 53_Customer_Journey_Map/  ← 고객 여정 지도
+├─ 60_Output/                ← 최종 완성 산출물만 저장
+└─ 90_Settings/              ← 명령어 원본·시스템 파일 (AI 쓰기 금지)
+    └─ commands/
+        ├─ ingest.md         ← /ingest 명령 원본 (온보딩 때 AI가 자동 설치)
+        └─ query.md          ← /query 명령 원본</code></pre>
 
 <h2>📜 폴더 간 규칙</h2>
 <table><tr><th style="width:22%">폴더</th><th>규칙</th></tr>
 <tr><td><code>10_Inbox</code></td><td>자료 입장. 사용자가 직접 파일을 넣는 <b>유일한</b> 폴더. 처리 후 <b>원본은 삭제</b>됩니다.</td></tr>
 <tr><td><code>20_Raw</code></td><td>메타데이터(프론트매터)가 장착된 MD 원본의 <b>영구 보관소</b>. 출처 추적 용도 — 수정·삭제 금지.</td></tr>
-<tr><td><code>30_Wiki</code></td><td>원본 1개가 의미 단위 <b>N개</b>로 분해된 지식 노트. 분류: Concept(개념) / Entity(실체) / Guide(방법) / MOC(목차·지도).</td></tr>
-<tr><td><code>40_Query</code></td><td>/query의 질문·답변 기록. 가치 있는 답변은 위키로 승격.</td></tr>
-<tr><td><code>50_Output</code></td><td>Wiki를 근거로 생성한 최종 산출물(PCD·MRD·보고서)이 저장. 지식의 집결지는 Wiki, 여기는 결과물 보관소.</td></tr></table>
+<tr><td><code>30_Wiki</code></td><td>AI가 자동 생성하는 정제된 <b>지식 베이스</b>. 분류: Concept / Entity / Guide / MOC. <b>사용자 직접 편집 금지</b>.</td></tr>
+<tr><td><code>40_Query</code></td><td><code>/query</code>의 질문·답변 임시 축적. 승격 전까지 임시 기록. 흐름과 <b>병행하는 탐색 지원 계층</b>.</td></tr>
+<tr><td><code>50_Project</code></td><td>Wiki 기반 <b>프로젝트 작업 공간</b>. 사용자 검토·수정 가능. 완성물은 <code>60_Output</code>으로 복사.</td></tr>
+<tr><td><code>60_Output</code></td><td><b>최종 완성 산출물</b>(PPT·문서·이미지)만 저장. 초안은 <code>50_Project</code>에서 작업.</td></tr>
+<tr><td><code>90_Settings</code></td><td>명령어 원본·템플릿·시스템 파일 보관소. <b>AI 쓰기 절대 금지</b> (온보딩 복사 제외).</td></tr></table>
 
 <h2>⚡ 자체 명령어 2종</h2>
 <div class="concept">
 <p><b><code>/ingest</code></b> — Inbox 스캔 → MD 변환 → 프론트매터 장착(모르면 1·2·3 선택지로 질문) → Raw 영구 보관 → 의미 단위 N개 분해 → Concept/Entity/Guide 분류 + MOC 갱신 + 위키링크 연결(같은 개념은 누적, 충돌 시 사용자 판정) → <b>Inbox 원본 삭제</b> → 결과 보고</p>
 <p><b><code>/query 질문</code></b> — <b>Wiki 안에서만</b> 근거 탐색(외부 지식 금지, 근거 없으면 "없음"이라 답함) → 답변+근거 노트 목록 → 40_Query에 기록(<code>origin: query-answer, confirmed: false</code>) → 승격 지시 시 위키에 직접 생성/업데이트 + 컨펌 기록</p>
 </div>
-<div class="analogy">명령어 원본은 <code>00_Setup/commands/</code>에 있습니다. 온보딩("규칙을 적용해줘") 때 AI가 <code>.claude/commands/</code>로 자동 복사해 클로드에서 정식 슬래시 명령으로 인식되고, 코덱스 연결 시에는 <code>AGENTS.md</code> 규칙으로 동작합니다. 사용자가 숨김 폴더를 만질 일은 없습니다.</div>
+<div class="analogy">명령어 원본은 <code>90_Settings/commands/</code>에 있습니다. 온보딩("규칙을 적용해줘") 때 AI가 <code>.claude/commands/</code>로 자동 복사해 클로드에서 정식 슬래시 명령으로 인식됩니다. 사용자가 숨김 폴더를 만질 일은 없습니다.</div>
 
 <h2>🏷️ 프론트매터 표준 — 자료연구용 15항목 (노트의 신분증)</h2>
 <pre><code>---
 # ── 기본 (필수 · AI가 자동 기입) ──
 title: 노트 제목
-type: raw | concept | entity | guide | moc | query | output
+type: raw | concept | entity | guide | moc | query | output | project
 created: YYYY-MM-DD            # Vault 등록일
 origin: external | query-answer
 confirmed: false
@@ -189,10 +197,12 @@ status: 미검토 | 검토중 | 검토완료
 
 <h2>✅ 설치 — 3단계</h2>
 <label class="step"><input type="checkbox"><span class="n">1.</span><span><b>StarterKit.zip</b> 압축을 풀면 StarterKit 폴더가 생깁니다. 그 <b>안의 내용물 전체</b>를 잘라내어 내 Vault 루트(<b>.obsidian 폴더와 같은 층</b>)에 붙여넣습니다. <b>같은 이름의 폴더가 없으므로 충돌·덮어쓰기 고민이 없습니다.</b> StarterKit 폴더째 넣으면 규칙·명령어가 인식되지 않습니다.<pre><code>내Vault폴더/
-├─ .obsidian/  .claudian/  .claude/   ← 자동 생성 (신경 쓸 필요 없음)
+├─ .obsidian/  .claudian/  .claude/          ← 자동 생성 (신경 쓸 필요 없음)
 ├─ CLAUDE.md  AGENTS.md  README.md
-├─ 00_Setup/commands/                 ← 명령어 원본 (AI가 자동 설치)
-└─ 10_Inbox/ 20_Raw/ 30_Wiki/ 40_Query/ 50_Output/</code></pre></span></label>
+├─ 10_Inbox/ 20_Raw/ 30_Wiki/ 40_Query/
+├─ 50_Project/ (51_PCD/ 52_Empathy_Map/ 53_Customer_Journey_Map/)
+├─ 60_Output/
+└─ 90_Settings/commands/                     ← 명령어 원본 (AI가 자동 설치)</code></pre></span></label>
 <label class="step"><input type="checkbox"><span class="n">2.</span><span>클로디안에 입력:<pre><code>CLAUDE.md(또는 AGENTS.md)의 규칙을 읽고 이 Vault에 적용해줘</code></pre>→ AI가 명령어 설치(.claude/commands 복사)와 폴더 확인까지 자동 수행합니다.</span></label>
 <label class="step"><input type="checkbox"><span class="n">3.</span><span>테스트 — <code>10_Inbox</code>에 파일 1개를 넣고 <code>/ingest</code>. 위키 노트가 생성되면 설치 완료.</span></label>
 
@@ -200,7 +210,9 @@ status: 미검토 | 검토중 | 검토완료
 <table><tr><th style="width:42%">하지 마세요</th><th>이유</th></tr>
 <tr><td>Inbox 외 폴더에 직접 파일 넣기·옮기기</td><td>프론트매터가 빠진 노트가 쌓이면 검색·연결이 깨져 '쓰레기통'이 됩니다.</td></tr>
 <tr><td>폴더 구조(이름·계층) 변경</td><td>규칙과 명령어가 폴더 구조를 전제로 동작합니다.</td></tr>
-<tr><td>20_Raw 노트 수정·삭제</td><td>출처 추적의 기준점이 사라집니다.</td></tr></table>
+<tr><td>20_Raw 노트 수정·삭제</td><td>출처 추적의 기준점이 사라집니다.</td></tr>
+<tr><td>30_Wiki 노트 직접 편집</td><td>Wiki는 AI 전용 생성 공간입니다. 사용자가 직접 편집하면 규칙 체계가 깨집니다. 수정이 필요하면 <code>/query</code> 후 승격 지시로 AI가 처리합니다.</td></tr>
+<tr><td>90_Settings 파일 AI가 수정</td><td>명령어 원본은 사용자만 관리합니다. AI는 온보딩 시 복사만 허용됩니다.</td></tr></table>
 
 <nav class="bottomnav"><a href="D_온보딩.html">← D. 온보딩에서 사용</a><a href="index.html">목차로 →</a></nav>
 <p class="note">체크 상태는 이 브라우저에 자동 저장됩니다. · 옵시디언 기반 LLM Wiki·PKM·RAG 실습형 강의 Workbook</p>

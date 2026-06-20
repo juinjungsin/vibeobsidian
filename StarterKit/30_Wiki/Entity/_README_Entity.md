@@ -1,7 +1,7 @@
----
-title: Entity 폴더 안내
-type: guide
-origin: starterkit
----
+# Entity — 실체 노트
 
-사람·회사·제품 같은 실체 노트.
+사람·회사·제품·서비스 등 실재하는 대상에 대한 노트.
+
+예: 스티브 잡스, 애플, 아이폰, 테슬라, 일론 머스크
+
+프론트매터 `type: entity`

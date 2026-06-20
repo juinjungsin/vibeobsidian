@@ -1,7 +1,7 @@
----
-title: Guide 폴더 안내
-type: guide
-origin: starterkit
----
+# Guide — 방법·절차 노트
 
-방법·절차 노트.
+어떻게 하는지를 설명하는 방법론·프로세스·절차 노트.
+
+예: 사용자 인터뷰 방법, 프로토타이핑 가이드, OKR 설정 절차
+
+프론트매터 `type: guide`

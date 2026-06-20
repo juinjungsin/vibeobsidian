@@ -1,7 +1,7 @@
----
-title: Concept 폴더 안내
-type: guide
-origin: starterkit
----
+# Concept — 개념 노트
 
-만질 수 없는 개념 노트. 예: 리더십, 블루오션.
+만질 수 없는 추상적 개념을 정의하는 노트.
+
+예: 리더십, 블루오션 전략, 디자인씽킹, 린 스타트업, 공감, 혁신
+
+프론트매터 `type: concept`

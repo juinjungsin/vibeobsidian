@@ -1,7 +1,10 @@
----
-title: MOC 폴더 안내
-type: guide
-origin: starterkit
----
+# MOC — Map of Content (목차·지도 노트)
 
-목차·지도(Map of Content) 노트. 관련 노트들의 길잡이.
+관련 노트들을 묶어 탐색을 돕는 목차 노트.
+특정 주제의 전체 구조를 한눈에 볼 수 있게 정리한다.
+
+예: `MOC_디자인씽킹.md` → 관련 Concept·Entity·Guide 노트 전체 링크
+
+프론트매터 `type: moc`
+
+생성 기준: 동일 주제 노트가 3개 이상 생성됐을 때 MOC를 생성하고, 노트가 추가될 때마다 갱신한다.
