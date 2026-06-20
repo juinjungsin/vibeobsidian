@@ -93,16 +93,17 @@ git clone <이 저장소 주소>
 StarterKit/
 ├─ CLAUDE.md / AGENTS.md          # 볼트 운영 규칙(클로드·코덱스용, 내용 동일)
 ├─ README.md                      # 설치·온보딩 안내
-├─ 00_Setup/commands/             # /ingest, /query 명령 원본 (온보딩 때 자동 설치)
 ├─ 10_Inbox/                      # 자료 입장 (직접 손대는 유일한 폴더)
-├─ 20_Raw/                        # 메타데이터 장착 후 영구 보관
-├─ 30_Wiki/ (Concept·Entity·Guide·MOC)   # 의미 단위로 분해된 지식 노트
-├─ 40_Query/                      # 질문·답변 기록
-└─ 50_Output/                     # 최종 산출물(PCD·MRD·보고서)
+├─ 20_Raw/                        # 메타데이터 장착 후 영구 보관·출처 추적
+├─ 30_Wiki/ (Concept·Entity·Guide·MOC)   # AI 자동 생성 지식 베이스 (직접 편집 금지)
+├─ 40_Query/                      # 질문·답변 임시 기록 (병행 탐색 계층)
+├─ 50_Project/ (51_PCD·52_Empathy_Map·53_Customer_Journey_Map)   # Wiki 기반 작업 공간 (사용자 수정 가능)
+├─ 60_Output/                     # 최종 완성 산출물만 저장
+└─ 90_Settings/commands/          # /ingest·/query 명령 원본 (온보딩 때 AI가 자동 설치)
 ```
 
-**파일 처리 흐름**: `10_Inbox → 20_Raw → 30_Wiki → 40_Query → 50_Output`
-**핵심 규칙**: 인박스에 넣는 것까지만 내 손으로 · Raw 수정·삭제 금지 · 위키 안에서만 답변 · 승격은 사람이 확인.
+**파일 처리 흐름**: `10_Inbox → 20_Raw → 30_Wiki → 50_Project → 60_Output` (40_Query는 흐름과 병행하는 탐색 지원 계층)
+**핵심 규칙**: 인박스에 넣는 것까지만 내 손으로 · Raw 수정·삭제 금지 · 위키는 AI 전용(직접 편집 금지) · 위키 안에서만 답변 · Project는 사용자 검토·수정 가능 · 승격은 사람이 확인.
 
 ---
 
