@@ -15,6 +15,12 @@ verify_*.png
 workbook/수정요청_1.txt
 *.tmp
 
+# ── 배포용 zip (폴더 내용물이 정본) ──
+*.zip
+
+# ── 루트의 임시 화면 캡처 ──
+/화면 캡처 *.png
+
 # ── OS·에디터 부산물 ──
 .DS_Store
 Thumbs.db
