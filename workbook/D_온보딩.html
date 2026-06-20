@@ -142,13 +142,13 @@ pre{position:relative;padding-right:72px}
 <div class="analogy">에베레스트를 오를 때 <b>베이스캠프까지는 헬기로 갑니다</b>. 스타터킷이 그 헬기입니다. 폴더 구조와 규칙을 직접 설계하는 것은 고급자의 일이고, 우리는 검증된 구조를 받아서 바로 등반(실습)을 시작합니다.</div>
 <div class="concept"><p>스타터킷 = <b>폴더 트리 + 폴더 간 규칙 + 자료 처리 방식</b>을 미리 규정해둔 패키지. 받은 구조는 건드리지 않습니다.</p><p>폴더 이름 앞 숫자(10_, 20_…)는 순서 표시이자 길찾기용입니다. "50번 폴더 들어가세요"라고 안내받기 위함입니다.</p><p>스킬 = 클로디안에서 <b>슬래시(/)로 부르는 자동화 명령</b>. 긴 프롬프트를 복사해 붙이는 대신 <code>/ingest</code>처럼 한 단어로 실행합니다.</p></div>
 <h2>✅ 따라하기</h2>
-<label class="step"><input type="checkbox"><span class="n">1.</span><span>클로디안 설치 — 옵시디언 설정(톱니바퀴) → 커뮤니티 플러그인 → 제한 모드 해제 → 탐색 → <b>Claudesidian</b> 검색 → 설치 → 활성화. <b>반드시 Vault를 연 다음에만 가능합니다.</b></span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span>좌측 사이드바의 클로디안 아이콘 클릭 → 설정에서 <b>Enable Codex Provider</b> 활성화 → 모델 선택.</span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span>스타터킷 압축 해제 → 생긴 StarterKit 폴더 <b>안의 내용물 전체</b>를 잘라내어 <b>Vault 루트(.obsidian 폴더와 같은 층)</b>에 붙여넣기. <b>같은 이름 폴더가 없어 충돌·덮어쓰기 고민이 없습니다</b> (명령어는 온보딩 때 AI가 자동 설치). StarterKit 폴더째 넣지만 마세요. <a href="스타터킷.html">📦 스타터킷 상세 페이지</a> 참고.<pre><code>내Vault폴더/
+<label class="step"><input type="checkbox"><span class="n">1.</span><span>클로디안 설치 — 옵시디언 설정(톱니바퀴) → 커뮤니티 플러그인 → 제한 모드 해제 → 탐색 → <b>Claudesidian</b> 검색 → 설치 → 활성화. <b>Vault가 열려있는 상태에서만 가능합니다.</b></span></label><label class="step"><input type="checkbox"><span class="n">2.</span><span><b>클로디안 설정</b> — 좌측 사이드바 클로디안 아이콘 클릭 → 설정 → <b>Enable Codex Provider</b> 활성화 → 모델 선택.</span></label><label class="step"><input type="checkbox"><span class="n">3.</span><span><b>스타터킷 사용하기</b> — 압축 해제 → StarterKit 폴더 <b>안의 내용물 전체</b>를 복사해서 <b>Vault 루트(.obsidian 폴더와 같은 층)</b>에 붙여넣기. 옵시디언 왼쪽 사이드바에 <b>폴더 구조가 보이면 성공</b>. 단 StarterKit 폴더째 넣지 마세요. <a href="스타터킷.html">📦 스타터킷 상세 페이지</a> 참고.<pre><code>내Vault폴더/
 ├─ .obsidian/  .claudian/  .claude/          ← 자동 생성 (신경 쓸 필요 없음)
 ├─ CLAUDE.md  AGENTS.md  README.md
 ├─ 10_Inbox/ 20_Raw/ 30_Wiki/ 40_Query/
 ├─ 50_Project/ (51_PCD/ 52_Empathy_Map/ 53_Customer_Journey_Map/)
 ├─ 60_Output/
-└─ 90_Settings/commands/                     ← 명령어 원본 (AI가 자동 설치)</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>클로디안 입력창에 적용 명령 → 빈 화면에서 <b>폴더 구조가 자동 생성</b>되는 것 확인.<pre><code>스타터킷의 규칙을 이 Vault에 적용해줘</code></pre>
+└─ 90_Settings/commands/                     ← 명령어 원본 (AI가 자동 설치)</code></pre></span></label><label class="step"><input type="checkbox"><span class="n">4.</span><span>클로디안 입력창에 <b>세부 규칙 적용 명령</b>을 수행합니다. 아래 내용을 복사하여 클로디안 입력창에 붙여넣기 하세요.<pre><code>스타터킷의 규칙을 이 Vault에 적용해줘</code></pre>
 <div style="border:1px solid var(--hairline);margin-top:12px">
 <div style="background:var(--surface-1);border-bottom:1px solid var(--hairline);padding:6px 12px;font-size:12px;letter-spacing:0.32px;color:var(--ink-muted)">⬛ 옵시디언 — 적용 명령 실행 중 화면</div>
 <div style="display:flex;flex-wrap:wrap;background:var(--inverse-canvas)">
